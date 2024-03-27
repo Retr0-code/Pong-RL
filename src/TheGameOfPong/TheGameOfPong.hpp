@@ -2,7 +2,7 @@
 #include <memory>
 #include <SFML/System.hpp>
 
-#include "Player.hpp"
+#include "IPlayer.hpp"
 #include "GameEngine.hpp"
 #include "ElasticBall.hpp"
 
@@ -13,8 +13,8 @@ class TheGameOfPong
 {
 public:
 	TheGameOfPong(
-		const std::shared_ptr<Player>& _player1,
-		const std::shared_ptr<Player>& _player2,
+		const std::shared_ptr<IPlayer>& _player1,
+		const std::shared_ptr<IPlayer>& _player2,
 		sf::Vector2u field = {500, 500}
 	);
 
@@ -24,8 +24,8 @@ public:
 
 private:
 	sf::Vector2u _field;
-	std::shared_ptr<Player> _player1;
-	std::shared_ptr<Player> _player2;
+	std::shared_ptr<IPlayer> _player1;
+	std::shared_ptr<IPlayer> _player2;
 	std::shared_ptr<ElasticBall> _ball;
 	std::unique_ptr<GameEngine> _engine;
 };

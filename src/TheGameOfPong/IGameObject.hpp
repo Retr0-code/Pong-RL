@@ -1,6 +1,7 @@
 #pragma once
-
+#include <memory>
 #include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
 
 /*	\class	IGameObject
 *	\brief	Interface class for all objects in game scene
@@ -8,22 +9,20 @@
 class IGameObject
 {
 public:
-	sf::Vector2f Origin() const;
+	using GameObjectPtr = std::shared_ptr<sf::Shape>;
 
-	sf::Vector2f& Origin();
+	IGameObject(const sf::Vector2f& position, sf::Shape* shape);
 
-	sf::Vector2f Coordinates() const;
+	virtual const sf::Shape* Shape(void) const;
 
-	sf::Vector2f& Coordinates();
+	virtual GameObjectPtr& Shape(void);
 
-	sf::Vector2f Shape() const;
+	virtual void Reset(void);
 
-	sf::Vector2f& Shape();
-
-	virtual ~IGameObject() = default;
+	virtual ~IGameObject(void) = default;
 
 protected:
-	sf::Vector2f _origin;
-	sf::Vector2f _coordinates;
-	sf::Vector2f _shape;
+	GameObjectPtr _shape;
+	sf::Vector2f _initialOrigin;
+	sf::Vector2f _initialPosition;
 };
