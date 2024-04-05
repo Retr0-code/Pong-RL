@@ -34,4 +34,3 @@ protected:
 private:
     static float _velocityLimit;
 };
-

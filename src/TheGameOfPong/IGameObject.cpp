@@ -1,25 +1,24 @@
 #include "IGameObject.hpp"
 
-using GameObjectPtr = std::shared_ptr<sf::Shape>;
+using GameObjectPtr = std::shared_ptr<sf::RectangleShape>;
 
-IGameObject::IGameObject(const sf::Vector2f& position, sf::Shape* shape)
-	: _shape(shape), _initialOrigin(shape->getOrigin()), _initialPosition(position)
+IGameObject::IGameObject(const sf::Vector2f& position, sf::RectangleShape* shape)
+	: _shape(shape), _originalShape(*shape)
 {
 	_shape->setPosition(position);
 }
 
-const sf::Shape* IGameObject::Shape(void) const
+const sf::RectangleShape *IGameObject::Shape(void) const
 {
-	return _shape.get();
+    return _shape.get();
 }
 
-GameObjectPtr& IGameObject::Shape(void)
+GameObjectPtr IGameObject::Shape(void)
 {
-	return _shape;
+    return _shape;
 }
 
 void IGameObject::Reset(void)
 {
-	_shape->setOrigin(_initialOrigin);
-	_shape->setPosition(_initialPosition);
+	*_shape = _originalShape;
 }
