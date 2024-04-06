@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 #include <memory>
 #include <SFML/System.hpp>
 
@@ -20,14 +21,23 @@ public:
 
 	void Run(void);
 
+	void Stop(void);
+
 	void Reset(void);
 
 	static const sf::Vector2u Field(void);
 
+	virtual ~TheGameOfPong();
+
 private:
+	void RunBackend(void);
+
+private:
+	std::atomic_bool _runGame;
 	static sf::Vector2u _field;
 	std::shared_ptr<IPlayer> _player1;
 	std::shared_ptr<IPlayer> _player2;
 	std::shared_ptr<ElasticBall> _ball;
 	std::unique_ptr<GameEngine> _engine;
+	sf::Thread _engineThread;
 };

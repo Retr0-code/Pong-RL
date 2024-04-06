@@ -30,6 +30,6 @@ sf::Vector2f IPlayer::ChooseSide(const PlayerSide side)
 {
 	sf::Vector2f field{ TheGameOfPong::Field() };
 	field.y /= 2;
-	field.x = side == Right ? field.x - _playerSize.x : _playerSize.x;
+	field.x = side == Right ? field.x - _playerSize.x - _playerSize.x / 2 : _playerSize.x;
     return field;
 }
