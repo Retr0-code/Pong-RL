@@ -10,13 +10,16 @@
 class GameEngine
 {
 public:
-	using SceneObjects = std::vector<const IGameObject*>;
+	using SceneObjects = std::vector<std::shared_ptr<IGameObject>>;
+	using SceneObjectsInit = std::initializer_list<std::shared_ptr<IGameObject>>;
 	
-	GameEngine(std::initializer_list<const IGameObject*> sceneObjects);
+	GameEngine(SceneObjectsInit sceneObjects);
 
 	GameEngine(const SceneObjects& sceneObjects);
 
-	void Render(void);
+	virtual void Render(void);
+
+	virtual ~GameEngine() = default;
 
 private:
 	SceneObjects _sceneObjects;

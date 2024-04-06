@@ -2,7 +2,7 @@
 
 using GameObjectPtr = std::shared_ptr<sf::RectangleShape>;
 
-IGameObject::IGameObject(const sf::Vector2f& position, sf::RectangleShape* shape)
+IGameObject::IGameObject(sf::RectangleShape* shape, const sf::Vector2f& position)
 	: _shape(shape), _originalShape(*shape)
 {
 	_shape->setPosition(position);

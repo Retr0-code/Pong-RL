@@ -13,8 +13,8 @@ class TheGameOfPong
 {
 public:
 	TheGameOfPong(
-		const std::shared_ptr<IPlayer>& _player1,
-		const std::shared_ptr<IPlayer>& _player2,
+		std::shared_ptr<IPlayer> player1,
+		std::shared_ptr<IPlayer> player2,
 		sf::Vector2u field = {500, 500}
 	);
 
@@ -22,8 +22,10 @@ public:
 
 	void Reset(void);
 
+	static const sf::Vector2u Field(void);
+
 private:
-	sf::Vector2u _field;
+	static sf::Vector2u _field;
 	std::shared_ptr<IPlayer> _player1;
 	std::shared_ptr<IPlayer> _player2;
 	std::shared_ptr<ElasticBall> _ball;

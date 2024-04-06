@@ -8,29 +8,32 @@ class IPlayer :
     public IGameObject
 {
 public:
-    typedef enum PlayerSide
+    typedef enum
     {
         Left,
         Right
-    };
+    } PlayerSide;
 
-    IPlayer(PlayerSide playerSide, const sf::Vector2f& paddleSize);
+    IPlayer(const PlayerSide playerSide, const sf::Vector2f& paddleSize);
 
     virtual void Update(void) = 0;
 
-    void SetVelocityLimit(float velocity);
+    virtual void SetVelocityLimit(const float velocity);
 
-    float GetVelocityLimit(float velocity) const;
+    virtual float GetVelocityLimit(void) const;
 
     virtual ~IPlayer(void) = default;
 
-private:
-    static sf::RectangleShape* CreateShape(void);
+protected:
+    static sf::RectangleShape* CreateShape(const sf::Vector2f& size);
+
+    static sf::Vector2f ChooseSide(const PlayerSide side);
 
 protected:
     uint16_t _score;
     float _velocity;
 
 private:
+    static sf::Vector2f _playerSize;
     static float _velocityLimit;
 };

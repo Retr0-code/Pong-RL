@@ -11,7 +11,7 @@ class IGameObject
 public:
 	using GameObjectPtr = std::shared_ptr<sf::RectangleShape>;
 
-	IGameObject(const sf::Vector2f& position, sf::RectangleShape* shape);
+	IGameObject(sf::RectangleShape* shape, const sf::Vector2f& position);
 
 	virtual const sf::RectangleShape* Shape(void) const;
 
