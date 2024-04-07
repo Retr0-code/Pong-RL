@@ -3,7 +3,7 @@
 ElasticBall::ElasticBall(const sf::Vector2u& center, float size)
     : IGameObject(CreateShape(size), sf::Vector2f(center)) {  }
 
-void ElasticBall::Update(void)
+void ElasticBall::Update(const sf::Time& deltaTime)
 {
 }
 

@@ -12,7 +12,7 @@ PlayerHuman<T>::PlayerHuman(PlayerSide playerSide, const sf::Vector2f &paddleSiz
 }
 
 template <typename T>
-void PlayerHuman<T>::Update(void)
+void PlayerHuman<T>::Update(const sf::Time& deltaTime)
 {
     PlayerAction direction{PlayerAction::Stay};
     IGameObject::GameObjectPtr paddle{IGameObject::Shape()};
@@ -25,7 +25,7 @@ void PlayerHuman<T>::Update(void)
     && paddleHitbox.top + paddleHitbox.height < TheGameOfPong::Field().y)
         direction = PlayerAction::Down;
     
-    paddle->move(0, GetVelocityLimit() * direction);
+    paddle->move(0, GetVelocityLimit() * direction * deltaTime.asMicroseconds());
 }
 
 template <typename T>

@@ -43,4 +43,5 @@ private:
 	std::shared_ptr<ElasticBall> _ball;
 	std::unique_ptr<GameEngine> _engine;
 	sf::Thread _engineThread;
+	sf::Clock _gameClock;
 };

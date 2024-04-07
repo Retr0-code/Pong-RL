@@ -7,7 +7,7 @@ class ElasticBall :
 public:
     ElasticBall(const sf::Vector2u& center, float size = 5);
 
-    void Update(void);
+    virtual void Update(const sf::Time& deltaTime) override;
 
 protected:
     static sf::RectangleShape* CreateShape(float size);

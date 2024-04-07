@@ -23,7 +23,7 @@ public:
 
     IPlayer(const PlayerSide playerSide, const sf::Vector2f& paddleSize);
 
-    virtual void Update(void) = 0;
+    // virtual void Update(void) = 0;
 
     static void SetVelocityLimit(const float velocity);
 

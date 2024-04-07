@@ -47,9 +47,11 @@ void TheGameOfPong::RunBackend(void)
 {
     while (_runGame)
     {
-        _player1->Update();
-        _player2->Update();
-        _ball->Update();
+        _gameClock.restart();
+        sf::Time deltaTime{_gameClock.getElapsedTime()};
+        _player1->Update(deltaTime);
+        _player2->Update(deltaTime);
+        _ball->Update(deltaTime);
         _engine->Render();
     }
 }

@@ -18,8 +18,10 @@ public:
 	virtual GameObjectPtr Shape(void);
 
 	virtual void Reset(void);
+	
+	virtual void Update(const sf::Time& deltaTime) = 0;
 
-	virtual ~IGameObject(void) = default;
+	virtual ~IGameObject() = default;
 
 protected:
 	GameObjectPtr _shape;

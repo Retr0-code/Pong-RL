@@ -1,5 +1,8 @@
 #include "GameEngine.hpp"
 
+#define WINDOW_FRAME_LIMIT 60
+
+// TODO(implement fps limit)
 GameEngine::GameEngine(
     SceneObjectsInit sceneObjects,
     const sf::Vector2u& resolution,
@@ -14,6 +17,7 @@ GameEngine::GameEngine(
         
         _sceneObjects.push_back(i);
     }
+    // _window->setFramerateLimit(WINDOW_FRAME_LIMIT);
 }
 
 GameEngine::GameEngine(
