@@ -1,6 +1,6 @@
 #include "GameEngine.hpp"
 
-#define WINDOW_FRAME_LIMIT 60
+#define WINDOW_FRAME_LIMIT 300
 
 // TODO(implement fps limit)
 GameEngine::GameEngine(
@@ -17,7 +17,7 @@ GameEngine::GameEngine(
         
         _sceneObjects.push_back(i);
     }
-    // _window->setFramerateLimit(WINDOW_FRAME_LIMIT);
+    _window->setFramerateLimit(WINDOW_FRAME_LIMIT);
 }
 
 GameEngine::GameEngine(

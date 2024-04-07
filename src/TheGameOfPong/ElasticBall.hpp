@@ -1,5 +1,9 @@
 #pragma once
+#include <cmath>
+
 #include "IGameObject.hpp"
+
+#define ELASTICBALL_VELOCITY {256.f, 256.f * std::cos(M_PI / 6.f)}
 
 class ElasticBall :
     public IGameObject

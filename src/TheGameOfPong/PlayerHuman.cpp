@@ -15,8 +15,7 @@ template <typename T>
 void PlayerHuman<T>::Update(const sf::Time& deltaTime)
 {
     PlayerAction direction{PlayerAction::Stay};
-    IGameObject::GameObjectPtr paddle{IGameObject::Shape()};
-    sf::FloatRect paddleHitbox{paddle->getGlobalBounds()};
+    sf::FloatRect paddleHitbox{IGameObject::_shape->getGlobalBounds()};
     
     if(sf::Keyboard::isKeyPressed(_controls.Up()) && paddleHitbox.top > 0)
         direction = PlayerAction::Up;
@@ -25,7 +24,7 @@ void PlayerHuman<T>::Update(const sf::Time& deltaTime)
     && paddleHitbox.top + paddleHitbox.height < TheGameOfPong::Field().y)
         direction = PlayerAction::Down;
     
-    paddle->move(0, GetVelocityLimit() * direction * deltaTime.asMicroseconds());
+    IGameObject::_shape->move(0, GetVelocityLimit() * direction * deltaTime.asSeconds());
 }
 
 template <typename T>
