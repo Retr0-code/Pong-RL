@@ -25,7 +25,9 @@ public:
 
 	void Reset(void);
 
-	static const sf::Vector2u Field(void);
+	static const sf::Vector2u& Field(void);
+
+	static const sf::FloatRect& FieldRect(void);
 
 	virtual ~TheGameOfPong();
 
@@ -35,6 +37,7 @@ private:
 private:
 	std::atomic_bool _runGame;
 	static sf::Vector2u _field;
+	static sf::FloatRect _fieldRect;
 	std::shared_ptr<IPlayer> _player1;
 	std::shared_ptr<IPlayer> _player2;
 	std::shared_ptr<ElasticBall> _ball;

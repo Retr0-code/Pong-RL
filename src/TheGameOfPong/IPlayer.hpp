@@ -14,15 +14,22 @@ public:
         Right
     } PlayerSide;
 
+    typedef enum
+    {
+        Stay = 0,
+        Up = -1,
+        Down = 1
+    } PlayerAction;
+
     IPlayer(const PlayerSide playerSide, const sf::Vector2f& paddleSize);
 
     virtual void Update(void) = 0;
 
-    virtual void SetVelocityLimit(const float velocity);
+    static void SetVelocityLimit(const float velocity);
 
     virtual float GetVelocityLimit(void) const;
 
-    virtual ~IPlayer(void) = default;
+    virtual ~IPlayer() = default;
 
 protected:
     static sf::RectangleShape* CreateShape(const sf::Vector2f& size);
