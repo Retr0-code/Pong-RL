@@ -1,9 +1,10 @@
 #include "TheGameOfPong.hpp"
 
 #define WINDOW_NAME "Pong"
+#define DELTA_TIME  1.f / 256.f
 
 sf::Vector2u TheGameOfPong::_field{500, 500};
-sf::FloatRect TheGameOfPong::_fieldRect(sf::Vector2f(0.f, 0.f), sf::Vector2f(_field));
+sf::FloatRect TheGameOfPong::_fieldRect(sf::Vector2f(0.f, 30.f), sf::Vector2f(_field));
 
 TheGameOfPong::TheGameOfPong(
     std::shared_ptr<IPlayer> player1,
@@ -45,13 +46,18 @@ TheGameOfPong::~TheGameOfPong()
 
 void TheGameOfPong::RunBackend(void)
 {
+    _gameClock.restart();
     while (_runGame)
     {
-        _gameClock.restart();
         sf::Time deltaTime{_gameClock.getElapsedTime()};
-        _player1->Update(deltaTime);
-        _player2->Update(deltaTime);
-        _ball->Update(deltaTime);
+
+        if (deltaTime.asSeconds() > DELTA_TIME)
+        {
+            _gameClock.restart();
+            _player1->Update(deltaTime);
+            _player2->Update(deltaTime);
+            _ball->Update(deltaTime);
+        }
         _engine->Render();
     }
 }
