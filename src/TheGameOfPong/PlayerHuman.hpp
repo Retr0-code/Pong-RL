@@ -10,7 +10,7 @@ class PlayerHuman :
 public:
     PlayerHuman(PlayerSide playerSide, const sf::Vector2f& paddleSize);
 
-    virtual void Update(void) override;
+    virtual void Update(const sf::Time& deltaTime) override;
 
     virtual void Reset(void) override;
 
