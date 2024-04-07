@@ -3,6 +3,7 @@
 #define WINDOW_NAME "Pong"
 
 sf::Vector2u TheGameOfPong::_field{500, 500};
+sf::FloatRect TheGameOfPong::_fieldRect(sf::Vector2f(0.f, 0.f), sf::Vector2f(_field));
 
 TheGameOfPong::TheGameOfPong(
     std::shared_ptr<IPlayer> player1,
@@ -27,9 +28,14 @@ void TheGameOfPong::Stop(void)
     _engineThread.wait();
 }
 
-const sf::Vector2u TheGameOfPong::Field(void)
+const sf::Vector2u& TheGameOfPong::Field(void)
 {
     return _field;
+}
+
+const sf::FloatRect &TheGameOfPong::FieldRect(void)
+{
+    return _fieldRect;
 }
 
 TheGameOfPong::~TheGameOfPong()

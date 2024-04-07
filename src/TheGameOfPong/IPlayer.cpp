@@ -1,7 +1,7 @@
 #include "IPlayer.hpp"
 #include "TheGameOfPong.hpp"
 
-float IPlayer::_velocityLimit{ 0 };
+float IPlayer::_velocityLimit{ 0.4f };
 sf::Vector2f IPlayer::_playerSize{ 5, 30 };
 
 IPlayer::IPlayer(const PlayerSide playerSide, const sf::Vector2f& paddleSize)

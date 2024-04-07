@@ -7,8 +7,8 @@
 
 int main(void)
 {
-    std::shared_ptr<IPlayer> player1{ new PlayerHuman(IPlayer::Left, PADDLE_SIZE) };
-    std::shared_ptr<IPlayer> player2{ new PlayerHuman(IPlayer::Right, PADDLE_SIZE) };
+    std::shared_ptr<IPlayer> player1{ new PlayerHuman<ControlSchemeArrows>(IPlayer::Left, PADDLE_SIZE) };
+    std::shared_ptr<IPlayer> player2{ new PlayerHuman<ControlSchemeWASD>(IPlayer::Right, PADDLE_SIZE) };
     TheGameOfPong pong(player1, player2);
     pong.Run();
     std::cin.get();
