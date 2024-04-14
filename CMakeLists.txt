@@ -9,6 +9,8 @@ set(INSTALL_PREFIX /usr/local/bin CACHE PATH "Path for installed binaries")
 set(BUILD_ARCH "amd64" CACHE STRING "Build architecture amd64/i386")
 set(BUILD_CPU "RELEASE" CACHE STRING "Build target mode RELEASE/DEBUG")
 
+set (CMAKE_CXX_STANDARD 17)
+
 # Setting install prefix
 set(CMAKE_INSTALL_PREFIX ${INSTALL_PREFIX})
 

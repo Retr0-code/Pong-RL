@@ -1,3 +1,4 @@
+#include <iostream>
 #include <type_traits>
 #include "TheGameOfPong.hpp"
 #include "PlayerHuman.hpp"
@@ -16,23 +17,31 @@ void PlayerHuman<T>::Update(const sf::Time& deltaTime)
 {
     PlayerAction direction{PlayerAction::Stay};
     sf::FloatRect paddleHitbox{IGameObject::_shape->getGlobalBounds()};
-    
-    if(sf::Keyboard::isKeyPressed(_controls.Up()) && paddleHitbox.top > 0)
+
+    if(sf::Keyboard::isKeyPressed(_controls.Up())
+    && TheGameOfPong::FieldRect().contains({IGameObject::_shape->getPosition().x, paddleHitbox.top}))
+    {
         direction = PlayerAction::Up;
+        _currentVelocity -= UpdateVelocity();
+    }
 
     else if(sf::Keyboard::isKeyPressed(_controls.Down())
-    && paddleHitbox.top + paddleHitbox.height < TheGameOfPong::Field().y)
+    && TheGameOfPong::FieldRect().contains({IGameObject::_shape->getPosition().x, paddleHitbox.top + paddleHitbox.height}))
+    {
         direction = PlayerAction::Down;
-    
-    IGameObject::_shape->move(0, GetVelocityLimit() * direction * deltaTime.asSeconds());
+        _currentVelocity += UpdateVelocity();
+    }
+    else
+        _currentVelocity *= _acceleration;
+
+    IGameObject::_shape->move(0, _velocityLimit * direction * deltaTime.asSeconds());
 }
 
 template <typename T>
 void PlayerHuman<T>::Reset(void)
 {
-    IGameObject::Reset();
+    IPlayer::Reset();
     _score = 0;
-    _velocity = 0;
 }
 
 inline sf::Keyboard::Key ControlSchemeArrows::Up(void) const
