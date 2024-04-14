@@ -3,7 +3,7 @@
 #include "TheGameOfPong.hpp"
 
 ElasticBall::ElasticBall(const sf::Vector2u& center, float size)
-    : IGameObject(CreateShape(size), sf::Vector2f(center)),
+    : IGameObject(sf::Vector2f(center), CreateShape(size)),
     _velocity(ELASTICBALL_VELOCITY), _velocityDefault(_velocity) {  }
 
 void ElasticBall::SetPlayers(std::shared_ptr<IPlayer> leftPlayer, std::shared_ptr<IPlayer> rightPlayer)

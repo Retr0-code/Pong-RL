@@ -12,7 +12,7 @@ class ElasticBall :
     public IGameObject
 {
 public:
-    ElasticBall(const sf::Vector2u& center, float size = 5);
+    ElasticBall(const sf::Vector2u& center, float size = 10);
 
     virtual void SetPlayers(std::shared_ptr<IPlayer> leftPlayer, std::shared_ptr<IPlayer> rightPlayer);
 
