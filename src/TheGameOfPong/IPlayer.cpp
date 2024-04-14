@@ -49,10 +49,10 @@ void IPlayer::SetBall(std::shared_ptr<ElasticBall> ball)
 	_ball = ball;
 }
 
-sf::RectangleShape *IPlayer::CreateShape(const sf::Vector2f &size)
+DrawableRect *IPlayer::CreateShape(const sf::Vector2f &size)
 {
 	_playerSize = size;
-    return new sf::RectangleShape(_playerSize);
+    return new DrawableRect(_playerSize);
 }
 
 sf::Vector2f IPlayer::ChooseSide(const PlayerSide side)

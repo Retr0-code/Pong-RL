@@ -3,17 +3,19 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "IDrawable.hpp"
+
 /*	\class	IGameObject
 *	\brief	Interface class for all objects in game scene
 */
 class IGameObject
 {
 public:
-	using GameObjectPtr = std::shared_ptr<sf::RectangleShape>;
+	using GameObjectPtr = std::shared_ptr<IDrawable>;
 
-	IGameObject(const sf::Vector2f& position, sf::RectangleShape* shape);
+	IGameObject(const sf::Vector2f& position, IDrawable* shape);
 
-	virtual const sf::RectangleShape* Shape(void) const;
+	virtual const IDrawable* Shape(void) const;
 
 	virtual GameObjectPtr Shape(void);
 
@@ -25,5 +27,5 @@ public:
 
 protected:
 	GameObjectPtr _shape;
-	sf::RectangleShape _originalShape;
+	std::unique_ptr<IDrawable> _originalShape;
 };
