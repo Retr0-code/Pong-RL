@@ -2,11 +2,11 @@
 #include "TheGameOfPong.hpp"
 
 float IPlayer::_velocityLimit{ 256.f };
-sf::Vector2f IPlayer::_playerSize{ 60, 120 };
+sf::Vector2f IPlayer::_playerSize{ 5, 30 };
 float IPlayer::_acceleration{ 0.05f };
 
 IPlayer::IPlayer(const PlayerSide playerSide, const sf::Vector2f& paddleSize)
-	: IGameObject(CreateShape(paddleSize), ChooseSide(playerSide)),
+	: IGameObject(ChooseSide(playerSide), CreateShape(paddleSize)),
 	_score(0), _currentVelocity(0.f) {  }
 
 void IPlayer::Reset(void)
@@ -59,6 +59,6 @@ sf::Vector2f IPlayer::ChooseSide(const PlayerSide side)
 {
 	sf::Vector2f field{ TheGameOfPong::Field() };
 	field.y /= 2;
-	field.x = side == Right ? field.x - _playerSize.x * 4 : _playerSize.x / 4;
+	field.x = side == Right ? field.x - _playerSize.x * 2 : _playerSize.x;
     return field;
 }
