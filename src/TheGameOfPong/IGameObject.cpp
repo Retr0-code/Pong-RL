@@ -6,6 +6,7 @@ IGameObject::IGameObject(sf::RectangleShape* shape, const sf::Vector2f& position
 	: _shape(shape), _originalShape(*shape)
 {
 	_shape->setPosition(position);
+	_originalShape.setPosition(position);
 }
 
 const sf::RectangleShape *IGameObject::Shape(void) const

@@ -15,6 +15,12 @@ public:
     virtual void Reset(void) override;
 
 private:
+    constexpr float UpdateVelocity(void)
+    {
+        return 1 >= std::abs(_currentVelocity) ? _acceleration : 0;
+    } 
+
+private:
     const T _controls;
 };
 

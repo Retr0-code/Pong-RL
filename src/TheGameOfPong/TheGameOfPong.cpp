@@ -4,7 +4,7 @@
 #define DELTA_TIME  1.f / 256.f
 
 sf::Vector2u TheGameOfPong::_field{500, 500};
-sf::FloatRect TheGameOfPong::_fieldRect(sf::Vector2f(0.f, 30.f), sf::Vector2f(_field));
+sf::FloatRect TheGameOfPong::_fieldRect(sf::Vector2f(0.f, 0.f), sf::Vector2f(_field));
 
 TheGameOfPong::TheGameOfPong(
     std::shared_ptr<IPlayer> player1,
@@ -15,6 +15,11 @@ TheGameOfPong::TheGameOfPong(
     _engineThread(&TheGameOfPong::RunBackend, this)
 {
     _field = field;
+    _ball->SetPlayers(_player1, _player2);
+    _player1->SetBall(_ball);
+    _player1->SetOtherPlayer(_player2);
+    _player2->SetBall(_ball);
+    _player2->SetOtherPlayer(_player1);
 }
 
 void TheGameOfPong::Run(void)
