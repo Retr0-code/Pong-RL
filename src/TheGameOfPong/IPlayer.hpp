@@ -40,7 +40,7 @@ public:
     virtual ~IPlayer() = default;
 
 protected:
-    static sf::RectangleShape* CreateShape(const sf::Vector2f& size);
+    static DrawableRect* CreateShape(const sf::Vector2f& size);
 
     static sf::Vector2f ChooseSide(const PlayerSide side);
 

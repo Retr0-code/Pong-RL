@@ -16,17 +16,18 @@ template <typename T>
 void PlayerHuman<T>::Update(const sf::Time& deltaTime)
 {
     PlayerAction direction{PlayerAction::Stay};
-    sf::FloatRect paddleHitbox{IGameObject::_shape->getGlobalBounds()};
+    sf::RectangleShape& shape = reinterpret_cast<sf::RectangleShape&>(IGameObject::_shape->Get());
+    sf::FloatRect paddleHitbox{shape.getGlobalBounds()};
 
     if(sf::Keyboard::isKeyPressed(_controls.Up())
-    && TheGameOfPong::FieldRect().contains({IGameObject::_shape->getPosition().x, paddleHitbox.top}))
+    && TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top}))
     {
         direction = PlayerAction::Up;
         _currentVelocity -= UpdateVelocity();
     }
 
     else if(sf::Keyboard::isKeyPressed(_controls.Down())
-    && TheGameOfPong::FieldRect().contains({IGameObject::_shape->getPosition().x, paddleHitbox.top + paddleHitbox.height}))
+    && TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top + paddleHitbox.height}))
     {
         direction = PlayerAction::Down;
         _currentVelocity += UpdateVelocity();
@@ -34,7 +35,7 @@ void PlayerHuman<T>::Update(const sf::Time& deltaTime)
     else
         _currentVelocity *= _acceleration;
 
-    IGameObject::_shape->move(0, _velocityLimit * direction * deltaTime.asSeconds());
+    shape.move(0, _velocityLimit * direction * deltaTime.asSeconds());
 }
 
 template <typename T>

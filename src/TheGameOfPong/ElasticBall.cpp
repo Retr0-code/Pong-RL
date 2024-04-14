@@ -23,7 +23,10 @@ void ElasticBall::Reset(void)
 
 void ElasticBall::Update(const sf::Time& deltaTime)
 {
-    sf::Vector2f position{IGameObject::_shape->getPosition()};
+    sf::RectangleShape& shape = reinterpret_cast<sf::RectangleShape&>(IGameObject::_shape->Get());
+    sf::RectangleShape& shapePlayerLeft = reinterpret_cast<sf::RectangleShape&>(_leftPlayer->Shape()->Get());
+    sf::RectangleShape& shapePlayerRight = reinterpret_cast<sf::RectangleShape&>(_rightPlayer->Shape()->Get());
+    sf::Vector2f position{shape.getPosition()};
 
     if (position.y > TheGameOfPong::Field().y || position.y < 0)
         _velocity.y = -_velocity.y;
@@ -36,10 +39,10 @@ void ElasticBall::Update(const sf::Time& deltaTime)
     }
 
     IPlayer* _playerCollided{nullptr};
-    if (IGameObject::_shape->getGlobalBounds().intersects(_leftPlayer->Shape()->getGlobalBounds()))
+    if (shape.getGlobalBounds().intersects(shapePlayerLeft.getGlobalBounds()))
         _playerCollided = _leftPlayer.get();
     
-    else if (IGameObject::_shape->getGlobalBounds().intersects(_rightPlayer->Shape()->getGlobalBounds()))
+    else if (shape.getGlobalBounds().intersects(shapePlayerRight.getGlobalBounds()))
         _playerCollided = _rightPlayer.get();
     
     if (_playerCollided)
@@ -48,10 +51,10 @@ void ElasticBall::Update(const sf::Time& deltaTime)
         _velocity.y = std::clamp(_velocity.y + _playerCollided->GetCurrentVelocity() * 256.f, -512.f, 512.f);
     }
 
-    IGameObject::_shape->move(_velocity * deltaTime.asSeconds());
+    shape.move(_velocity * deltaTime.asSeconds());
 }
 
-sf::RectangleShape *ElasticBall::CreateShape(float size)
+DrawableRect *ElasticBall::CreateShape(float size)
 {
-    return new sf::RectangleShape({size, size});
+    return new DrawableRect({size, size});
 }

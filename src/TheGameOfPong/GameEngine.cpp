@@ -2,7 +2,6 @@
 
 #define WINDOW_FRAME_LIMIT 300
 
-// TODO(implement fps limit)
 GameEngine::GameEngine(
     SceneObjectsInit sceneObjects,
     const sf::Vector2u& resolution,
@@ -38,7 +37,7 @@ void GameEngine::Render(void)
     _window->clear(sf::Color::Black);
 
     for (auto obj : _sceneObjects)
-        _window->draw(*obj->Shape());
+        _window->draw(obj->Shape()->Get());
 
     _window->display();
 }

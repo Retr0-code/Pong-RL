@@ -21,7 +21,7 @@ public:
     virtual void Update(const sf::Time& deltaTime) override;
 
 protected:
-    static sf::RectangleShape* CreateShape(float size);
+    static DrawableRect* CreateShape(float size);
 
 private:
     sf::Vector2f _velocity;

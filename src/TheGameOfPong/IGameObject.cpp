@@ -1,15 +1,15 @@
 #include "IGameObject.hpp"
 
-using GameObjectPtr = std::shared_ptr<sf::RectangleShape>;
+using GameObjectPtr = std::shared_ptr<IDrawable>;
 
-IGameObject::IGameObject(const sf::Vector2f& position, sf::RectangleShape* shape)
-	: _shape(shape), _originalShape(*shape)
+IGameObject::IGameObject(const sf::Vector2f& position, IDrawable* shape)
+	: _shape(shape)
 {
-	_shape->setPosition(position);
-	_originalShape.setPosition(position);
+	_shape->SetPosition(position);
+	_originalShape = std::unique_ptr<IDrawable>(_shape->Clone());
 }
 
-const sf::RectangleShape *IGameObject::Shape(void) const
+const IDrawable *IGameObject::Shape(void) const
 {
     return _shape.get();
 }
@@ -21,5 +21,5 @@ GameObjectPtr IGameObject::Shape(void)
 
 void IGameObject::Reset(void)
 {
-	*_shape = _originalShape;
+	_shape->Copy(*_originalShape);
 }
