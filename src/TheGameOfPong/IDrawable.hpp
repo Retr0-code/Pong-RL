@@ -50,3 +50,41 @@ public:
 private:
     sf::RectangleShape _shape;
 };
+
+class DrawableText
+    : public IDrawable
+{
+    DrawableText(float fontSize)
+    {
+        _text.setCharacterSize(fontSize);
+    }
+
+    virtual IDrawable& Copy(const DrawableText& otherShape)
+    {
+        _text = otherShape._text;
+        return *this;
+    }
+
+    virtual IDrawable& Copy(const IDrawable& shape) override
+    {
+        return Copy(static_cast<const DrawableRect&>(shape));
+    }
+
+    virtual sf::Drawable& Get(void)
+    {
+        return _text;
+    }
+
+    virtual void SetPosition(sf::Vector2f coordinates)
+    {
+        _text.setPosition(coordinates);
+    }
+
+    virtual IDrawable* Clone(void) const override
+    {
+        return new DrawableText(*this);
+    }
+
+private:
+    sf::Text _text;
+};
