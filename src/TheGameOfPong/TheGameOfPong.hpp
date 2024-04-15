@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 
 #include "IPlayer.hpp"
+#include "Scoreboard.hpp"
 #include "GameEngine.hpp"
 #include "ElasticBall.hpp"
 
@@ -41,6 +42,7 @@ private:
 	std::shared_ptr<IPlayer> _player1;
 	std::shared_ptr<IPlayer> _player2;
 	std::shared_ptr<ElasticBall> _ball;
+	std::shared_ptr<Scoreboard> _scoreboard;
 	std::unique_ptr<GameEngine> _engine;
 	sf::Thread _engineThread;
 	sf::Clock _gameClock;
