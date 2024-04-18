@@ -6,7 +6,7 @@ ElasticBall::ElasticBall(const sf::Vector2u& center, float size)
     : IGameObject(sf::Vector2f(center), CreateShape(size)),
     _velocity(ELASTICBALL_VELOCITY), _velocityDefault(_velocity) {  }
 
-void ElasticBall::SetPlayers(std::shared_ptr<IPlayer> leftPlayer, std::shared_ptr<IPlayer> rightPlayer)
+void ElasticBall::SetPlayers(IPlayerShared leftPlayer, IPlayerShared rightPlayer)
 {
     if (leftPlayer.get() == nullptr || rightPlayer.get() == nullptr)
 		throw std::invalid_argument{ "Error: ElasticBall::SetPlayers got nullptr." };
@@ -31,24 +31,23 @@ void ElasticBall::Update(const sf::Time& deltaTime)
     if (position.y > TheGameOfPong::Field().y || position.y < 0)
         _velocity.y = -_velocity.y;
 
-    if (position.x > TheGameOfPong::Field().x || position.x < 0)
-    {
-        this->Reset();
-        _leftPlayer->Reset();
-        _rightPlayer->Reset();
-    }
+    if (position.x < 0)
+        UpdatePlayersScore(_rightPlayer, _leftPlayer);
 
-    IPlayer* _playerCollided{nullptr};
+    else if (position.x > TheGameOfPong::Field().x)
+        UpdatePlayersScore(_leftPlayer, _rightPlayer);
+
+    IPlayer* _player{nullptr};
     if (shape.getGlobalBounds().intersects(shapePlayerLeft.getGlobalBounds()))
-        _playerCollided = _leftPlayer.get();
+        _player = _leftPlayer.get();
     
     else if (shape.getGlobalBounds().intersects(shapePlayerRight.getGlobalBounds()))
-        _playerCollided = _rightPlayer.get();
+        _player = _rightPlayer.get();
     
-    if (_playerCollided)
+    if (_player)
     {
         _velocity.x = -_velocity.x;
-        _velocity.y = std::clamp(_velocity.y + _playerCollided->GetCurrentVelocity() * 256.f, -512.f, 512.f);
+        _velocity.y = std::clamp(_velocity.y + _player->GetCurrentVelocity() * 256.f, -512.f, 512.f);
     }
 
     shape.move(_velocity * deltaTime.asSeconds());
@@ -57,4 +56,14 @@ void ElasticBall::Update(const sf::Time& deltaTime)
 DrawableRect *ElasticBall::CreateShape(float size)
 {
     return new DrawableRect({size, size});
+}
+
+void ElasticBall::UpdatePlayersScore(IPlayerShared scoredPlayer, IPlayerShared missedPlayer)
+{
+    scoredPlayer->UpdateScore(IPlayer::Reward::Score);
+    missedPlayer->UpdateScore(IPlayer::Reward::Miss);
+
+    this->Reset();
+    _leftPlayer->IPlayer::Reset();
+    _rightPlayer->IPlayer::Reset();
 }

@@ -54,9 +54,16 @@ private:
 class DrawableText
     : public IDrawable
 {
-    DrawableText(float fontSize)
+public:
+    // TODO (Add courier.ttf to resource file)
+    DrawableText(uint32_t fontSize)
     {
+        _font.loadFromFile("/usr/share/fonts/truetype/Courier.ttf");
+        _text.setFont(_font);
+        _text.setFillColor(sf::Color::White);
         _text.setCharacterSize(fontSize);
+        _text.setString("0 : 0");
+        _text.setOrigin(_text.getLocalBounds().width / 2.f, 0);
     }
 
     virtual IDrawable& Copy(const DrawableText& otherShape)
@@ -86,5 +93,6 @@ class DrawableText
     }
 
 private:
+    sf::Font _font;
     sf::Text _text;
 };

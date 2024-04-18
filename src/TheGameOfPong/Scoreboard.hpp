@@ -8,9 +8,20 @@ class Scoreboard
     : public IGameObject
 {
 public:
-    Scoreboard(const IPlayer& leftPlayer, const IPlayer& rightPlayer);
+    using IPlayerShared = std::shared_ptr<IPlayer>;
 
-    virtual void Reset(void);
+    Scoreboard(const sf::Vector2u& field, IPlayerShared leftPlayer, IPlayerShared rightPlayer);
 
-    virtual void Update(sf::Time deltaTime);
+    virtual void Reset(void) override;
+
+    virtual void Update(const sf::Time& deltaTime) override;
+
+private:
+    static IDrawable* CreateText(const sf::Vector2u& field);
+
+    std::string FormatValues(void);
+
+private:
+    IPlayerShared _leftPlayer;
+    IPlayerShared _rightPlayer;
 };

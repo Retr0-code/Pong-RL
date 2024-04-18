@@ -12,9 +12,11 @@ class ElasticBall :
     public IGameObject
 {
 public:
+    using IPlayerShared = std::shared_ptr<IPlayer>;
+
     ElasticBall(const sf::Vector2u& center, float size = 10);
 
-    virtual void SetPlayers(std::shared_ptr<IPlayer> leftPlayer, std::shared_ptr<IPlayer> rightPlayer);
+    virtual void SetPlayers(IPlayerShared leftPlayer, IPlayerShared rightPlayer);
 
     virtual void Reset(void) override;
 
@@ -24,9 +26,11 @@ protected:
     static DrawableRect* CreateShape(float size);
 
 private:
+    void UpdatePlayersScore(IPlayerShared scoredPlayer, IPlayerShared missedPlayer);
+
     sf::Vector2f _velocity;
     sf::Vector2f _velocityDefault;
-    std::shared_ptr<IPlayer> _leftPlayer;
-    std::shared_ptr<IPlayer> _rightPlayer;
+    IPlayerShared _leftPlayer;
+    IPlayerShared _rightPlayer;
 };
 

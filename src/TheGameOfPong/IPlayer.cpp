@@ -33,6 +33,11 @@ float IPlayer::GetCurrentVelocity(void) const
     return _currentVelocity;
 }
 
+uint16_t IPlayer::GetScore(void) const
+{
+    return _score;
+}
+
 void IPlayer::SetOtherPlayer(std::shared_ptr<IPlayer> otherPlayer)
 {
 	if (otherPlayer.get() == nullptr)

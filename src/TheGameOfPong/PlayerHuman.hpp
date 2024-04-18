@@ -14,11 +14,10 @@ public:
 
     virtual void Reset(void) override;
 
+    virtual void UpdateScore(Reward reward) override;
+
 private:
-    constexpr float UpdateVelocity(void)
-    {
-        return 1 >= std::abs(_currentVelocity) ? _acceleration : 0;
-    } 
+    constexpr float UpdateVelocity(void);
 
 private:
     const T _controls;

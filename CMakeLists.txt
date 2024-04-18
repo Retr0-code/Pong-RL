@@ -61,10 +61,11 @@ set(BUILD_SHARED_LIBS OFF)
 set(SRC_THE_GAME_OF_PONG
     src/TheGameOfPong/IGameObject.cpp
     src/TheGameOfPong/IPlayer.cpp
-    src/TheGameOfPong/ElasticBall.cpp
     src/TheGameOfPong/PlayerHuman.cpp
-    src/TheGameOfPong/TheGameOfPong.cpp
+    src/TheGameOfPong/ElasticBall.cpp
+    src/TheGameOfPong/Scoreboard.cpp
     src/TheGameOfPong/GameEngine.cpp
+    src/TheGameOfPong/TheGameOfPong.cpp
     src/TheGameOfPong/IEnviroment.cpp
     src/main.cpp
 )
