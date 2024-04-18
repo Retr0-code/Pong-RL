@@ -23,6 +23,12 @@ public:
         Down = 1
     } PlayerAction;
 
+    typedef enum
+    {
+        Miss = 0,
+        Score = 1
+    } Reward;
+
     IPlayer(const PlayerSide playerSide, const sf::Vector2f& paddleSize);
     
     virtual void Reset(void) override;
@@ -32,10 +38,14 @@ public:
     virtual float GetVelocityLimit(void) const;
 
     virtual float GetCurrentVelocity(void) const;
+    
+    virtual uint16_t GetScore(void) const;
 
-    void SetOtherPlayer(std::shared_ptr<IPlayer> otherPlayer);
+    virtual void SetOtherPlayer(std::shared_ptr<IPlayer> otherPlayer);
 
-    void SetBall(std::shared_ptr<ElasticBall> ball);
+    virtual void SetBall(std::shared_ptr<ElasticBall> ball);
+
+    virtual void UpdateScore(Reward reward) = 0;
 
     virtual ~IPlayer() = default;
 

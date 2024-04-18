@@ -45,6 +45,18 @@ void PlayerHuman<T>::Reset(void)
     _score = 0;
 }
 
+template <typename T>
+void PlayerHuman<T>::UpdateScore(Reward reward)
+{
+    _score += reward;
+}
+
+template <typename T>
+constexpr float PlayerHuman<T>::UpdateVelocity(void)
+{
+    return 1 >= std::abs(_currentVelocity) ? _acceleration : 0;
+}
+
 inline sf::Keyboard::Key ControlSchemeArrows::Up(void) const
 {
     return sf::Keyboard::Key::Up;

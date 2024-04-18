@@ -10,8 +10,9 @@ TheGameOfPong::TheGameOfPong(
     std::shared_ptr<IPlayer> player1,
     std::shared_ptr<IPlayer> player2,
     sf::Vector2u field)
-    : _runGame(false), _player1(player1), _player2(player2), _ball(new ElasticBall(field / uint32_t(2))),
-    _engine(new GameEngine(GameEngine::SceneObjectsInit{_player1, _player2, _ball}, field, WINDOW_NAME)),
+    : _runGame(false), _player1(player1), _player2(player2),
+    _ball(new ElasticBall(field / uint32_t(2))), _scoreboard(new Scoreboard(field, _player1, _player2)),
+    _engine(new GameEngine(GameEngine::SceneObjectsInit{_player1, _player2, _ball, _scoreboard}, field, WINDOW_NAME)),
     _engineThread(&TheGameOfPong::RunBackend, this)
 {
     _field = field;
@@ -62,6 +63,7 @@ void TheGameOfPong::RunBackend(void)
             _player1->Update(deltaTime);
             _player2->Update(deltaTime);
             _ball->Update(deltaTime);
+            _scoreboard->Update(deltaTime);
         }
         _engine->Render();
     }
