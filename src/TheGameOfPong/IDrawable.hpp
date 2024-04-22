@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+#include "FontCourier.hpp"
+
 class IDrawable
 {
 public:
@@ -55,10 +57,9 @@ class DrawableText
     : public IDrawable
 {
 public:
-    // TODO (Add courier.ttf to resource file)
     DrawableText(uint32_t fontSize)
     {
-        _font.loadFromFile("/usr/share/fonts/truetype/Courier.ttf");
+        _font.loadFromMemory(_font_courier_ttf, _font_courier_ttf_size);
         _text.setFont(_font);
         _text.setFillColor(sf::Color::White);
         _text.setCharacterSize(fontSize);
