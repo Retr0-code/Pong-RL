@@ -1,4 +1,3 @@
-#include <iostream>
 #include <type_traits>
 #include "TheGameOfPong.hpp"
 #include "PlayerHuman.hpp"
@@ -16,26 +15,20 @@ template <typename T>
 void PlayerHuman<T>::Update(const sf::Time& deltaTime)
 {
     PlayerAction direction{PlayerAction::Stay};
-    sf::RectangleShape& shape = reinterpret_cast<sf::RectangleShape&>(IGameObject::_shape->Get());
+    sf::RectangleShape& shape{reinterpret_cast<sf::RectangleShape&>(IGameObject::_shape->Get())};
     sf::FloatRect paddleHitbox{shape.getGlobalBounds()};
 
     if(sf::Keyboard::isKeyPressed(_controls.Up())
     && TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top}))
-    {
         direction = PlayerAction::Up;
-        _currentVelocity -= UpdateVelocity();
-    }
 
     else if(sf::Keyboard::isKeyPressed(_controls.Down())
     && TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top + paddleHitbox.height}))
-    {
         direction = PlayerAction::Down;
-        _currentVelocity += UpdateVelocity();
-    }
-    else
-        _currentVelocity *= _acceleration;
 
-    shape.move(0, _velocityLimit * direction * deltaTime.asSeconds());
+    UpdateVelocity(direction);
+
+    shape.move(0, GetVelocityLimit() * direction * deltaTime.asSeconds());
 }
 
 template <typename T>
@@ -49,12 +42,6 @@ template <typename T>
 void PlayerHuman<T>::UpdateScore(Reward reward)
 {
     _score += reward;
-}
-
-template <typename T>
-constexpr float PlayerHuman<T>::UpdateVelocity(void)
-{
-    return 1 >= std::abs(_currentVelocity) ? _acceleration : 0;
 }
 
 inline sf::Keyboard::Key ControlSchemeArrows::Up(void) const

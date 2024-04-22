@@ -62,6 +62,7 @@ set(SRC_THE_GAME_OF_PONG
     src/TheGameOfPong/IGameObject.cpp
     src/TheGameOfPong/IPlayer.cpp
     src/TheGameOfPong/PlayerHuman.cpp
+    src/TheGameOfPong/PlayerFollower.cpp
     src/TheGameOfPong/ElasticBall.cpp
     src/TheGameOfPong/Scoreboard.cpp
     src/TheGameOfPong/GameEngine.cpp
