@@ -17,9 +17,6 @@ public:
     virtual void UpdateScore(Reward reward) override;
 
 private:
-    constexpr float UpdateVelocity(void);
-
-private:
     const T _controls;
 };
 

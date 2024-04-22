@@ -54,6 +54,21 @@ void IPlayer::SetBall(std::shared_ptr<ElasticBall> ball)
 	_ball = ball;
 }
 
+void IPlayer::UpdateVelocity(PlayerAction action)
+{
+	switch (action)
+	{
+		case Up:
+    		_currentVelocity -= 1 >= std::abs(_currentVelocity) ? _acceleration : 0;
+			break;
+		case Down:
+    		_currentVelocity += 1 >= std::abs(_currentVelocity) ? _acceleration : 0;
+			break;
+		default:
+        	_currentVelocity *= _acceleration;
+	}
+}
+
 DrawableRect *IPlayer::CreateShape(const sf::Vector2f &size)
 {
 	_playerSize = size;

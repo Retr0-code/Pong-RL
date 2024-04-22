@@ -54,6 +54,8 @@ protected:
 
     static sf::Vector2f ChooseSide(const PlayerSide side);
 
+    virtual void UpdateVelocity(PlayerAction action);
+
 protected:
     uint16_t _score;
     float _currentVelocity;
