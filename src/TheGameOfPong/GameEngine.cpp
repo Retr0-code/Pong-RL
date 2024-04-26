@@ -67,5 +67,6 @@ void GameEngine::Stop(void)
 
 GameEngine::~GameEngine()
 {
+    _runGame = false;
     _window->close();
 }
