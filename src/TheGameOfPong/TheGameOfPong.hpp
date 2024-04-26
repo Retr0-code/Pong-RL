@@ -36,7 +36,6 @@ private:
 	void RunBackend(void);
 
 private:
-	std::atomic_bool _runGame;
 	static sf::Vector2u _field;
 	static sf::FloatRect _fieldRect;
 	std::shared_ptr<IPlayer> _player1;
@@ -45,5 +44,4 @@ private:
 	std::shared_ptr<Scoreboard> _scoreboard;
 	std::unique_ptr<GameEngine> _engine;
 	sf::Thread _engineThread;
-	sf::Clock _gameClock;
 };

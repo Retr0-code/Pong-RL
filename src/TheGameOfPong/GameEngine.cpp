@@ -7,7 +7,7 @@ GameEngine::GameEngine(
     const sf::Vector2u& resolution,
     const sf::String& windowTitle
     )
-    : _window(new sf::RenderWindow(sf::VideoMode(resolution.x, resolution.y), windowTitle))
+    : _runGame(false), _window(new sf::RenderWindow(sf::VideoMode(resolution.x, resolution.y), windowTitle))
 {
     for (auto i : sceneObjects)
     {
@@ -24,7 +24,7 @@ GameEngine::GameEngine(
 		const sf::Vector2u& resolution,
 		const sf::String& windowTitle
 		)
-    : _sceneObjects(sceneObjects),
+    : _runGame(false), _sceneObjects(sceneObjects),
     _window(new sf::RenderWindow(sf::VideoMode(resolution.x, resolution.y), windowTitle))
 {
     for (auto i : _sceneObjects)
@@ -40,6 +40,29 @@ void GameEngine::Render(void)
         _window->draw(obj->Shape()->Get());
 
     _window->display();
+}
+
+void GameEngine::Run(void)
+{
+    _runGame = true;
+    _gameClock.restart();
+    while (_runGame)
+    {
+        sf::Time deltaTime{_gameClock.getElapsedTime()};
+
+        if (deltaTime.asSeconds() > DELTA_TIME)
+        {
+            _gameClock.restart();
+            for (auto obj : _sceneObjects)
+                obj->Update(deltaTime);
+        }
+        Render();
+    }
+}
+
+void GameEngine::Stop(void)
+{
+    _runGame = false;
 }
 
 GameEngine::~GameEngine()
