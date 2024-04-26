@@ -53,6 +53,11 @@ void ElasticBall::Update(const sf::Time& deltaTime)
     shape.move(_velocity * deltaTime.asSeconds());
 }
 
+const sf::Vector2f &ElasticBall::GetVelocity(void)
+{
+    return _velocity;
+}
+
 DrawableRect *ElasticBall::CreateShape(float size)
 {
     return new DrawableRect({size, size});

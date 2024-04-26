@@ -22,6 +22,8 @@ public:
 
     virtual void Update(const sf::Time& deltaTime) override;
 
+    virtual const sf::Vector2f& GetVelocity(void);
+
 protected:
     static DrawableRect* CreateShape(float size);
 

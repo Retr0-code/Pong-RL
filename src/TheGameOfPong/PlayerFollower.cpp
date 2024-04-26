@@ -13,10 +13,10 @@ void PlayerFollower::Update(const sf::Time &deltaTime)
     sf::FloatRect playerHitbox{playerShape.getGlobalBounds()};
 
     PlayerAction direction{PlayerAction::Stay};
-    if (ballShape.getPosition().y > playerHitbox.top + playerHitbox.height)
+    if (ballShape.getPosition().y > playerHitbox.top + playerHitbox.height && _ball->GetVelocity().x > 0)
         direction = Down;
 
-    else if (ballShape.getPosition().y < playerHitbox.top)
+    else if (ballShape.getPosition().y < playerHitbox.top && _ball->GetVelocity().x > 0)
         direction = Up;
 
     UpdateVelocity(direction);
