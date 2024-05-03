@@ -68,6 +68,7 @@ set(SRC_THE_GAME_OF_PONG
     src/TheGameOfPong/GameEngine.cpp
     src/TheGameOfPong/TheGameOfPong.cpp
     src/TheGameOfPong/IEnviroment.cpp
+    src/Math/Matrix.cpp
     src/main.cpp
 )
 
