@@ -36,3 +36,7 @@ Debug
 Release
 x64
 *.vcxproj*
+.vscode
+
+# General folders
+build
