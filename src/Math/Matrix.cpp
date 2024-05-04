@@ -19,7 +19,7 @@ Matrix<T>::Matrix(size_t width, size_t height, std::initializer_list<T> vectors)
     size_t row{0}, column{0};
     for (auto element : vectors)
     {
-        if (row > _height)
+        if (row >= _height)
                 break;
 
         _matrixVector[row][column] = element;
@@ -168,7 +168,7 @@ template <typename T>
 Matrix<T> Matrix<T>::operator+(const T &vector) const
 {
     if (!IsSquare())
-        throw std::runtime_error{"Error in [Matrix<T> Matrix<T>::operator+(const T &vector) const] given matrix is not square."};
+        throw std::invalid_argument{"Error in [Matrix<T> Matrix<T>::operator+(const T &vector) const] given matrix is not square."};
     
     return *this + (Identity(_height) * vector);
 }
@@ -201,7 +201,7 @@ template <typename T>
 Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) const
 {
     if (_width != other._height)
-        throw std::runtime_error{"Error in [Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) const]\n\twidth and height are different."};
+        throw std::invalid_argument{"Error in [Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) const]\n\twidth and height are different."};
 
     Matrix<T> multiplied(other._width, _height);
     for (size_t row{0}; row < multiplied._height; ++row)
@@ -238,6 +238,24 @@ Matrix<T> Matrix<T>::operator/(const T &vector) const
     });
 
     return FullDoubleIteration(lambdaDivide, other);
+}
+
+template <typename T>
+bool Matrix<T>::operator==(const Matrix<T> &other) const
+{
+    for (size_t row{0}; row < _height; ++row)
+        for (size_t column{0}; column < _width; ++column)
+            if (_matrixVector[row][column] != other._matrixVector[row][column])
+                return false;
+
+    return true;
+}
+
+template <typename T>
+Math::Matrix<T>::operator bool(void) const
+{
+    Matrix<T> nullMatrix(_width, _height);
+    return *this == nullMatrix;
 }
 
 template <typename T>

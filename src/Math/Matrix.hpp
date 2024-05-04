@@ -65,6 +65,10 @@ namespace Math
         Matrix<T> operator*(const T& vector) const;
 
         Matrix<T> operator/(const T& vector) const;
+        
+        bool operator==(const Matrix<T>& other) const;
+        
+        operator bool(void) const;
 
         friend std::ostream& operator<<(std::ostream& out, const Matrix<T>& matrix)
         {
