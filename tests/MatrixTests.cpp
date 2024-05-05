@@ -21,10 +21,22 @@ BOOST_AUTO_TEST_CASE(test_MatrixConstructor)
 BOOST_AUTO_TEST_CASE(test_MatrixMiscFunctions)
 {
     // Resize
+    Matrix<int> A(1, 1, {1});
+    BOOST_TEST(A.Resize(2, 3) == Matrix<int>({{1, 0, 0}, {0, 0, 0}, {0, 0, 0}}));
     // operator[]
+    BOOST_CHECK_THROW(A[3], std::out_of_range);
+    std::vector<int> row = {1, 2, 3};
+    BOOST_TEST((A[2] = row) == row);
     // At
+    BOOST_CHECK_THROW(A.At(3), std::out_of_range);
+    BOOST_TEST(A.At(2) == row);
     // Fill
+    BOOST_TEST(A.Fill(1) == Matrix<int>({{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}));
+    BOOST_TEST(A.Fill([](const int& elem){return elem * 2;}) == Matrix<int>({{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}));
     // IsSquare
+    BOOST_TEST(A.IsSquare() == false);
+    A.Resize(3, 3);
+    BOOST_TEST(A.IsSquare());
     // Determinant
 }
 
@@ -36,5 +48,11 @@ BOOST_AUTO_TEST_CASE(test_MatrixArithmetic)
     BOOST_TEST(B * A == B);
     BOOST_CHECK_THROW(A + B, std::invalid_argument);
     B.Resize(2, 2);
+    BOOST_TEST(-B == Matrix<int>(2, 2, {-1, -2, -3, -4}));
     BOOST_TEST(B + A == Matrix<int>(2, 2, {2, 2, 3, 5}));
+    BOOST_TEST(B - A == Matrix<int>(2, 2, {0, 2, 3, 3}));
+    BOOST_TEST(A + 5 == Matrix<int>(2, 2, {6, 0, 0, 6}));
+    BOOST_TEST(A - 5 == Matrix<int>(2, 2, {-4, 0, 0, -4}));
+    BOOST_TEST(A * 5 == Matrix<int>({{5, 0}, {0, 5}}));
+    BOOST_TEST(B / 2 == Matrix<int>({{0, 1}, {1, 2}}));
 }

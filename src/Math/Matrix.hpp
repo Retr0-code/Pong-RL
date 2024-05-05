@@ -14,7 +14,7 @@ namespace Math
         using MatrixVector = std::vector<std::vector<T>>;
         using LambdaUpdater = std::function<T(const T& elemIterFirst, const T& elemIterSecond)>;
 
-        Matrix(size_t width, size_t height, std::initializer_list<T> vectors = {});
+        Matrix(size_t width = 1, size_t height = 1, std::initializer_list<T> vectors = {});
         
         Matrix(const Matrix<T>& other);
         
@@ -32,11 +32,11 @@ namespace Math
 
         const MatrixVector& Vector(void) const noexcept;
 
-        void Resize(size_t width, size_t height);
+        Matrix<T>& Resize(size_t width, size_t height);
 
-        void Fill(const T& vector) noexcept;
+        Matrix<T>& Fill(const T& vector) noexcept;
 
-        void Fill(std::function<T(const T&)> lambda);
+        Matrix<T>& Fill(std::function<T(const T&)> lambda);
 
         static Matrix<T> Identity(size_t order);
         
