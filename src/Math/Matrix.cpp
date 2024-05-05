@@ -69,7 +69,7 @@ const MatrixVector<T> &Matrix<T>::Vector(void) const noexcept
 }
 
 template <typename T>
-void Matrix<T>::Resize(size_t width, size_t height)
+Matrix<T>& Matrix<T>::Resize(size_t width, size_t height)
 {
     if (height != _height)
         _matrixVector.resize(height);
@@ -80,22 +80,27 @@ void Matrix<T>::Resize(size_t width, size_t height)
 
     _height = height;
     _width = width;
+    return *this;
 }
 
 template <typename T>
-void Math::Matrix<T>::Fill(const T &vector) noexcept
+Matrix<T>& Matrix<T>::Fill(const T &vector) noexcept
 {
     for (std::vector<T> &row : _matrixVector)
         for (T& elem : row)
             elem = vector;
+
+    return *this;
 }
 
 template <typename T>
-void Matrix<T>::Fill(std::function<T(const T&)> lambda)
+Matrix<T>& Matrix<T>::Fill(std::function<T(const T&)> lambda)
 {
     for (std::vector<T> &row : _matrixVector)
         for (T& elem : row)
             elem = lambda(elem);
+
+    return *this;
 }
 
 template <typename T>
