@@ -76,8 +76,11 @@ set(SRC_THE_GAME_OF_PONG
 
 enable_testing()
 add_executable(MatrixTests src/Math/Matrix.cpp tests/MatrixTests.cpp)
+add_executable(MathTests src/Math/Math.hpp src/Math/Matrix.cpp tests/MathTests.cpp)
 target_link_libraries(MatrixTests boost_unit_test_framework)
+target_link_libraries(MathTests boost_unit_test_framework)
 add_test(NAME MatrixTests COMMAND MatrixTests --log_level=all)
+add_test(NAME MathTests COMMAND MathTests --log_level=all)
 
 add_executable(${PROJECT_NAME} ${SRC_THE_GAME_OF_PONG})
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)

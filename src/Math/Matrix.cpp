@@ -69,6 +69,12 @@ const MatrixVector<T> &Matrix<T>::Vector(void) const noexcept
 }
 
 template <typename T>
+MatrixVector<T> &Matrix<T>::Vector(void) noexcept
+{
+    return _matrixVector;
+}
+
+template <typename T>
 Matrix<T>& Matrix<T>::Resize(size_t width, size_t height)
 {
     if (height != _height)
@@ -161,7 +167,7 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> &other) const
     if (other._height != _height || other._width != _width)
         throw std::invalid_argument{"Error in [Matrix<T> Matrix<T>::operator+(const Matrix<T> &other) const]\n\tmatrixes' sizes do not match.\n"};
 
-    LambdaUpdater lambdaSum([&](const T& elemIterFirst, const T& elemIterSecond) -> T
+    LambdaDoubleUpdater lambdaSum([&](const T& elemIterFirst, const T& elemIterSecond) -> T
     {
             return elemIterFirst + elemIterSecond;
     });
@@ -223,7 +229,7 @@ Matrix<T> Matrix<T>::operator*(const T &vector) const
     Matrix<T> other(_width, _height);
     other.Fill(vector);
 
-    LambdaUpdater lambdaMultiply([&](const T& elemIterFirst, const T& elemIterSecond) -> T
+    LambdaDoubleUpdater lambdaMultiply([&](const T& elemIterFirst, const T& elemIterSecond) -> T
     {
             return elemIterFirst * elemIterSecond;
     });
@@ -237,7 +243,7 @@ Matrix<T> Matrix<T>::operator/(const T &vector) const
     Matrix<T> other(_width, _height);
     other.Fill(vector);
 
-    LambdaUpdater lambdaDivide([&](const T& elemIterFirst, const T& elemIterSecond) -> T
+    LambdaDoubleUpdater lambdaDivide([&](const T& elemIterFirst, const T& elemIterSecond) -> T
     {
             return elemIterFirst / elemIterSecond;
     });
@@ -264,7 +270,7 @@ Math::Matrix<T>::operator bool(void) const
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::FullDoubleIteration(const LambdaUpdater& lambda, const Matrix<T>& other) const
+Matrix<T> Matrix<T>::FullDoubleIteration(const LambdaDoubleUpdater& lambda, const Matrix<T>& other) const
 {
     Matrix<T> result(_width, _height);
     std::transform(_matrixVector.begin(), _matrixVector.end(), other._matrixVector.begin(), result._matrixVector.begin(), 
@@ -285,3 +291,5 @@ Matrix<T> Matrix<T>::FullDoubleIteration(const LambdaUpdater& lambda, const Matr
 }
 
 template class Matrix<int>;
+template class Matrix<float>;
+template class Matrix<double>;

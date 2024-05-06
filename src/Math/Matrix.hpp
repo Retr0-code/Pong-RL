@@ -12,7 +12,7 @@ namespace Math
     {
     public:
         using MatrixVector = std::vector<std::vector<T>>;
-        using LambdaUpdater = std::function<T(const T& elemIterFirst, const T& elemIterSecond)>;
+        using LambdaDoubleUpdater = std::function<T(const T&, const T&)>;
 
         Matrix(size_t width = 1, size_t height = 1, std::initializer_list<T> vectors = {});
         
@@ -31,6 +31,8 @@ namespace Math
         size_t Width(void) const noexcept;
 
         const MatrixVector& Vector(void) const noexcept;
+        
+        MatrixVector& Vector(void) noexcept;
 
         Matrix<T>& Resize(size_t width, size_t height);
 
@@ -84,7 +86,7 @@ namespace Math
         }
 
     private:
-        Matrix<T> FullDoubleIteration(const LambdaUpdater& lambda, const Matrix<T>& other) const;
+        Matrix<T> FullDoubleIteration(const LambdaDoubleUpdater& lambda, const Matrix<T>& other) const;
 
     private:
         size_t _width;
