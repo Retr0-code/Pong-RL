@@ -3,7 +3,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "../src/Math/Math.hpp"
+#include "Math/Math.hpp"
 
 using Math::Matrix;
 
