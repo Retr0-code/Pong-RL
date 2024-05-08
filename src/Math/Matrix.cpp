@@ -19,7 +19,7 @@ Matrix<T>::Matrix(size_t width, size_t height, std::initializer_list<T> vectors)
     size_t row{0}, column{0};
     for (auto element : vectors)
     {
-        if (row > _height)
+        if (row >= _height)
                 break;
 
         _matrixVector[row][column] = element;
@@ -69,7 +69,13 @@ const MatrixVector<T> &Matrix<T>::Vector(void) const noexcept
 }
 
 template <typename T>
-void Matrix<T>::Resize(size_t width, size_t height)
+MatrixVector<T> &Matrix<T>::Vector(void) noexcept
+{
+    return _matrixVector;
+}
+
+template <typename T>
+Matrix<T>& Matrix<T>::Resize(size_t width, size_t height)
 {
     if (height != _height)
         _matrixVector.resize(height);
@@ -80,22 +86,27 @@ void Matrix<T>::Resize(size_t width, size_t height)
 
     _height = height;
     _width = width;
+    return *this;
 }
 
 template <typename T>
-void Math::Matrix<T>::Fill(const T &vector) noexcept
+Matrix<T>& Matrix<T>::Fill(const T &vector) noexcept
 {
     for (std::vector<T> &row : _matrixVector)
         for (T& elem : row)
             elem = vector;
+
+    return *this;
 }
 
 template <typename T>
-void Matrix<T>::Fill(std::function<T(const T&)> lambda)
+Matrix<T>& Matrix<T>::Fill(std::function<T(const T&)> lambda)
 {
     for (std::vector<T> &row : _matrixVector)
         for (T& elem : row)
             elem = lambda(elem);
+
+    return *this;
 }
 
 template <typename T>
@@ -156,7 +167,7 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> &other) const
     if (other._height != _height || other._width != _width)
         throw std::invalid_argument{"Error in [Matrix<T> Matrix<T>::operator+(const Matrix<T> &other) const]\n\tmatrixes' sizes do not match.\n"};
 
-    LambdaUpdater lambdaSum([&](const T& elemIterFirst, const T& elemIterSecond) -> T
+    LambdaDoubleUpdater lambdaSum([&](const T& elemIterFirst, const T& elemIterSecond) -> T
     {
             return elemIterFirst + elemIterSecond;
     });
@@ -168,7 +179,7 @@ template <typename T>
 Matrix<T> Matrix<T>::operator+(const T &vector) const
 {
     if (!IsSquare())
-        throw std::runtime_error{"Error in [Matrix<T> Matrix<T>::operator+(const T &vector) const] given matrix is not square."};
+        throw std::invalid_argument{"Error in [Matrix<T> Matrix<T>::operator+(const T &vector) const] given matrix is not square."};
     
     return *this + (Identity(_height) * vector);
 }
@@ -201,7 +212,7 @@ template <typename T>
 Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) const
 {
     if (_width != other._height)
-        throw std::runtime_error{"Error in [Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) const]\n\twidth and height are different."};
+        throw std::invalid_argument{"Error in [Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) const]\n\twidth and height are different."};
 
     Matrix<T> multiplied(other._width, _height);
     for (size_t row{0}; row < multiplied._height; ++row)
@@ -218,7 +229,7 @@ Matrix<T> Matrix<T>::operator*(const T &vector) const
     Matrix<T> other(_width, _height);
     other.Fill(vector);
 
-    LambdaUpdater lambdaMultiply([&](const T& elemIterFirst, const T& elemIterSecond) -> T
+    LambdaDoubleUpdater lambdaMultiply([&](const T& elemIterFirst, const T& elemIterSecond) -> T
     {
             return elemIterFirst * elemIterSecond;
     });
@@ -232,7 +243,7 @@ Matrix<T> Matrix<T>::operator/(const T &vector) const
     Matrix<T> other(_width, _height);
     other.Fill(vector);
 
-    LambdaUpdater lambdaDivide([&](const T& elemIterFirst, const T& elemIterSecond) -> T
+    LambdaDoubleUpdater lambdaDivide([&](const T& elemIterFirst, const T& elemIterSecond) -> T
     {
             return elemIterFirst / elemIterSecond;
     });
@@ -241,7 +252,25 @@ Matrix<T> Matrix<T>::operator/(const T &vector) const
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::FullDoubleIteration(const LambdaUpdater& lambda, const Matrix<T>& other) const
+bool Matrix<T>::operator==(const Matrix<T> &other) const
+{
+    for (size_t row{0}; row < _height; ++row)
+        for (size_t column{0}; column < _width; ++column)
+            if (_matrixVector[row][column] != other._matrixVector[row][column])
+                return false;
+
+    return true;
+}
+
+template <typename T>
+Math::Matrix<T>::operator bool(void) const
+{
+    Matrix<T> nullMatrix(_width, _height);
+    return *this == nullMatrix;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::FullDoubleIteration(const LambdaDoubleUpdater& lambda, const Matrix<T>& other) const
 {
     Matrix<T> result(_width, _height);
     std::transform(_matrixVector.begin(), _matrixVector.end(), other._matrixVector.begin(), result._matrixVector.begin(), 
@@ -262,3 +291,5 @@ Matrix<T> Matrix<T>::FullDoubleIteration(const LambdaUpdater& lambda, const Matr
 }
 
 template class Matrix<int>;
+template class Matrix<float>;
+template class Matrix<double>;

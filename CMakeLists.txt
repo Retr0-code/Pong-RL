@@ -5,6 +5,8 @@ project(Pong-RL
     HOMEPAGE_URL "https://github.com/Retr0-code/Pong-RL"
 )
 
+include(CTest)
+
 set(INSTALL_PREFIX /usr/local/bin CACHE PATH "Path for installed binaries")
 set(BUILD_ARCH "amd64" CACHE STRING "Build architecture amd64/i386")
 set(BUILD_CPU "RELEASE" CACHE STRING "Build target mode RELEASE/DEBUG")
@@ -71,6 +73,14 @@ set(SRC_THE_GAME_OF_PONG
 	src/IEnviroment.cpp
     src/main.cpp
 )
+
+enable_testing()
+add_executable(MatrixTests src/Math/Matrix.cpp tests/MatrixTests.cpp)
+add_executable(MathTests src/Math/Math.hpp src/Math/Matrix.cpp tests/MathTests.cpp)
+target_link_libraries(MatrixTests boost_unit_test_framework)
+target_link_libraries(MathTests boost_unit_test_framework)
+add_test(NAME MatrixTests COMMAND MatrixTests --log_level=all)
+add_test(NAME MathTests COMMAND MathTests --log_level=all)
 
 add_executable(${PROJECT_NAME} ${SRC_THE_GAME_OF_PONG})
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
