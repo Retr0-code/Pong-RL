@@ -60,30 +60,19 @@ endif()
 
 set(BUILD_SHARED_LIBS OFF)
 
-set(SRC_THE_GAME_OF_PONG
-    src/TheGameOfPong/IGameObject.cpp
-    src/TheGameOfPong/IPlayer.cpp
-    src/TheGameOfPong/PlayerHuman.cpp
-    src/TheGameOfPong/PlayerFollower.cpp
-    src/TheGameOfPong/ElasticBall.cpp
-    src/TheGameOfPong/Scoreboard.cpp
-    src/TheGameOfPong/GameEngine.cpp
-    src/TheGameOfPong/TheGameOfPong.cpp
-    src/Math/Matrix.cpp
+set(SRC_MAIN
 	src/IEnviroment.cpp
     src/main.cpp
 )
 
-enable_testing()
-add_executable(MatrixTests src/Math/Matrix.cpp tests/MatrixTests.cpp)
-add_executable(MathTests src/Math/Math.hpp src/Math/Matrix.cpp tests/MathTests.cpp)
-target_link_libraries(MatrixTests boost_unit_test_framework)
-target_link_libraries(MathTests boost_unit_test_framework)
-add_test(NAME MatrixTests COMMAND MatrixTests --log_level=all)
-add_test(NAME MathTests COMMAND MathTests --log_level=all)
+add_subdirectory(src/Math)
+add_subdirectory(src/TheGameOfPong)
+add_subdirectory(tests)
 
-add_executable(${PROJECT_NAME} ${SRC_THE_GAME_OF_PONG})
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
+add_executable(${PROJECT_NAME} ${SRC_MAIN})
+target_include_directories(${PROJECT_NAME} PUBLIC ${Pong-RL_SOURCE_DIR}/include)
+
+target_link_libraries(${PROJECT_NAME} LibMath LibTheGameOfPong)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 message(STATUS "WARNING! Installation prefix ${CMAKE_INSTALL_PREFIX}")
