@@ -19,6 +19,10 @@ BOOST_AUTO_TEST_CASE(test_FunctionContext)
     BOOST_TEST(sequence.GetLayers()[0].size() == 4);
     BOOST_TEST(sequence.GetLayers()[1].size() == 32);
     BOOST_TEST(sequence.GetLayers()[2].size() == 1);
+    BOOST_TEST(sequence.GetWeights()[0].Width() == 32);
+    BOOST_TEST(sequence.GetWeights()[1].Width() == 4);
+    BOOST_TEST(sequence.GetWeights()[0].Height() == 4);
+    BOOST_TEST(sequence.GetWeights()[1].Height() == 1);
 
     sequence.SetRandomWeights<std::default_random_engine>(0.f, 1.f);
     for (auto& matrix : sequence.GetWeights())

@@ -15,8 +15,10 @@ void FunctionContext<T>::AddLayer(const LayerPair& layer)
     size_t size{layer.first};
     const ActivationFunction& activation{layer.second};
 
+    if (_layers.size() > 0)
+        _weights.push_back(Matrix<T>(size, (_layers.end() - 1)->size()));
+    
     _layers.push_back(std::vector<T>(size));
-    _weights.push_back(Matrix<T>(size, (_layers.end() - 1)->size()));
     _layersActivation.push_back(activation);
 }
 
