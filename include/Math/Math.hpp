@@ -21,6 +21,12 @@ namespace Math
     }
 
     template <typename T>
+    T Linear(const T& vector) noexcept
+    {
+        return vector;
+    }
+
+    template <typename T>
     Matrix<T> ReLU(const Matrix<T>& matrix)
     {
         const std::function<T(const T&)>& lambdaRelu([&](const T& inputValue)
@@ -40,6 +46,12 @@ namespace Math
         });
 
         return UpdateIterateThrouhMatrix(lambdaSigmoid, matrix);
+    }
+
+    template <typename T>
+    Matrix<T> Linear(const Matrix<T>& matrix)
+    {
+        return matrix;
     }
     
     template <typename T>
