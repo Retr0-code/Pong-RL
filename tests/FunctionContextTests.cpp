@@ -16,17 +16,24 @@ BOOST_AUTO_TEST_CASE(test_FunctionContext)
         {32, &Math::ReLU},
         {1, &Math::Sigmoid}
     });
-    BOOST_TEST(sequence.GetLayers()[0].size() == 4);
-    BOOST_TEST(sequence.GetLayers()[1].size() == 32);
-    BOOST_TEST(sequence.GetLayers()[2].size() == 1);
-    BOOST_TEST(sequence.GetWeights()[0].Width() == 32);
-    BOOST_TEST(sequence.GetWeights()[1].Width() == 4);
-    BOOST_TEST(sequence.GetWeights()[0].Height() == 4);
-    BOOST_TEST(sequence.GetWeights()[1].Height() == 1);
+
+    BOOST_TEST(sequence.Layers()[0].size() == 4);
+    BOOST_TEST(sequence.Layers()[1].size() == 32);
+    BOOST_TEST(sequence.Layers()[2].size() == 1);
+    BOOST_TEST(sequence.Weights()[0].Width() == 32);
+    BOOST_TEST(sequence.Weights()[0].Height() == 4);
+    BOOST_TEST(sequence.Weights()[1].Width() == 1);
+    BOOST_TEST(sequence.Weights()[1].Height() == 32);
 
     sequence.SetRandomWeights<std::default_random_engine>(0.f, 1.f);
-    for (auto& matrix : sequence.GetWeights())
+    for (auto& matrix : sequence.Weights())
         std::cout << matrix << '\n';
 
-    
+    sequence.Forward({1, 2, 3, 4});
+    for (auto& vector : sequence.Layers())
+    {
+        for (auto& elem : vector)
+            std::cout << elem << ' ';
+        std::cout << '\n';
+    }
 }

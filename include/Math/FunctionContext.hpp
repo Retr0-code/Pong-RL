@@ -21,9 +21,9 @@ namespace Math
 
         const std::vector<T>& Forward(const std::vector<T>& input);
 
-        const std::vector<Matrix<T>>& GetWeights(void) const;
+        const std::vector<Matrix<T>>& Weights(void) const;
         
-        const std::vector<std::vector<T>>& GetLayers(void) const;
+        const std::vector<std::vector<T>>& Layers(void) const;
         
         template <typename RNG>
         const std::vector<Matrix<T>>& SetRandomWeights(T lower, T upper)
@@ -45,6 +45,6 @@ namespace Math
         std::vector<ActivationFunction> _layersActivation;
 
     private:
-        static std::vector<T> Propogate(const std::vector<T>& input, const Matrix<T>& weights);
+        static Matrix<T> Propogate(const std::vector<T>& input, const Matrix<T>& weights);
     };
 }
