@@ -16,5 +16,13 @@ BOOST_AUTO_TEST_CASE(test_FunctionContext)
         {32, &Math::ReLU},
         {1, &Math::Sigmoid}
     });
-    BOOST_TEST(sequence.GetLayers());
+    BOOST_TEST(sequence.GetLayers()[0].size() == 4);
+    BOOST_TEST(sequence.GetLayers()[1].size() == 32);
+    BOOST_TEST(sequence.GetLayers()[2].size() == 1);
+
+    sequence.SetRandomWeights<std::default_random_engine>(0.f, 1.f);
+    for (auto& matrix : sequence.GetWeights())
+        std::cout << matrix << '\n';
+
+    
 }

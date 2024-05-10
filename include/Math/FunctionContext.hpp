@@ -1,4 +1,6 @@
 #pragma once
+#include <random>
+
 #include "Math.hpp"
 #include "Matrix.hpp"
 
@@ -17,13 +19,25 @@ namespace Math
 
         void AddLayer(const LayerPair& layer);
 
-        Matrix<T> Forward(const Matrix<T>& input) const;
+        const std::vector<T>& Forward(const std::vector<T>& input);
 
         const std::vector<Matrix<T>>& GetWeights(void) const;
         
         const std::vector<std::vector<T>>& GetLayers(void) const;
         
-        const std::vector<Matrix<T>>& SetRandomWeights(void);
+        template <typename RNG>
+        const std::vector<Matrix<T>>& SetRandomWeights(T lower, T upper)
+        {
+            RNG engine;
+            std::uniform_real_distribution<T> distribution(lower, upper);
+
+            for (auto& layer : _weights)
+                for (auto& row : layer.Vector())
+                    for (auto& elem : row)
+                        elem = distribution(engine);
+            
+            return _weights;
+        }
 
     protected:
         std::vector<std::vector<T>> _layers;
@@ -31,7 +45,6 @@ namespace Math
         std::vector<ActivationFunction> _layersActivation;
 
     private:
-
-
+        static std::vector<T> Propogate(const std::vector<T>& input, const Matrix<T>& weights);
     };
 }

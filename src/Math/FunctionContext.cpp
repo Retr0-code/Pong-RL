@@ -21,9 +21,24 @@ void FunctionContext<T>::AddLayer(const LayerPair& layer)
 }
 
 template <typename T>
-Matrix<T> FunctionContext<T>::Forward(const Matrix<T> &input) const
+const std::vector<T>& FunctionContext<T>::Forward(const std::vector<T> &input)
 {
-    return Matrix<T>();
+    if (input.size() != _layers.size())
+        throw std::invalid_argument{"Error in [Matrix<T> FunctionContext<T>::Forward(const Matrix<T> &input) const]\n\tinput vector does not match inputs amount."};
+    
+    _layers[0] = input;
+
+    std::transform(
+        _layers.begin(), _layers.end() - 1,
+        _weights.begin(), _layers.begin() + 1,
+        &FunctionContext::Propogate
+    // [&](const std::vector<T>& input, const Matrix<T>& weights)
+    // {
+    //     return Propogate(input, weights);
+    // }
+    );
+
+    return *(_layers.end() - 1);
 }
 
 template <typename T>
@@ -39,9 +54,10 @@ const std::vector<std::vector<T>> &FunctionContext<T>::GetLayers(void) const
 }
 
 template <typename T>
-const std::vector<Matrix<T>> &FunctionContext<T>::SetRandomWeights(void)
+std::vector<T> Math::FunctionContext<T>::Propogate(const std::vector<T> &input, const Matrix<T> &weights)
 {
-    return _weights;
+    Matrix<T> inputVector({input});
+    return (inputVector * weights)[0];
 }
 
 template class FunctionContext<int>;
