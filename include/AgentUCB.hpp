@@ -21,14 +21,18 @@ public:
     using ActionsSpace = std::vector<ActionsEnum>;
     using StateDimensions = std::vector<std::pair<float, float>>;
 
-    AgentUCB(const StateDimensions& dimensions, const ActionsSpace& actions, size_t epsilon = 0);
+    AgentUCB(const StateDimensions& dimensions, const ActionsSpace& actions, float epsilon = 0);
 
-    virtual const ActionsEnum& Action(void) const;
+    virtual ActionsEnum& Action(void) override;
 
-    const std::vector<float>& Observe(const std::vector<float>& observation);
+    virtual const std::vector<float>& Observe(const std::vector<float>& observation) override;
 
 private:
-    size_t _epsilon;
+    float UCB(const std::vector<float>& observation);
+
+private:
+    size_t _inputsAmount;
+    float _epsilon;
     ActionsSpace _actions;
     std::unordered_map<std::vector<float>, ActionsEnum> _states;
 };
