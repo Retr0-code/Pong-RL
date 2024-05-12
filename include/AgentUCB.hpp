@@ -4,15 +4,6 @@
 
 #include "IAgent.hpp"
 
-// class std::hash<std::vector<float>>
-// {
-// public:
-//     size_t operator()(const std::vector<float>& input)
-//     {
-//         for ()
-//     }
-// };
-
 template <typename ActionsEnum>
 class AgentUCB
     : public IAgent<float, ActionsEnum>
@@ -21,18 +12,40 @@ public:
     using ActionsSpace = std::vector<ActionsEnum>;
     using StateDimensions = std::vector<std::pair<float, float>>;
 
-    AgentUCB(const StateDimensions& dimensions, const ActionsSpace& actions, float epsilon = 0);
+    typedef struct
+    {
+        size_t timesSelected;
+        float rewardSum;
+        float upperBound;
+    } ActionsStats;
+
+    typedef struct
+    {
+        float totalReward;
+        float nextReward;
+        std::unordered_map<ActionsEnum, ActionsStats> actionsStats;
+    } StateActionReward;
+
+    AgentUCB(const StateDimensions& dimensions, const ActionsSpace& actions, float epsilon = 0.f, float rewardRatio = 1.f);
 
     virtual ActionsEnum& Action(void) override;
 
     virtual const std::vector<float>& Observe(const std::vector<float>& observation) override;
 
-private:
-    float UCB(const std::vector<float>& observation);
+    virtual void Reward(bool positive = true) override;
 
 private:
+    ActionsEnum& UCB(void);
+
+    float NextReward(StateActionReward& state);
+
+private:
+    size_t _episode;
     size_t _inputsAmount;
     float _epsilon;
+    float _rewardRatio;
+    float _totalReward;
     ActionsSpace _actions;
-    std::unordered_map<std::vector<float>, ActionsEnum> _states;
+    StateActionReward& _lastObservationState;
+    std::unordered_map<std::vector<float>, StateActionReward> _states;
 };
