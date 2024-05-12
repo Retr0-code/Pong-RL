@@ -40,6 +40,7 @@ ActionsEnum &AgentUCB<ActionsEnum>::Action(void)
         }
     }
     ++_lastObservationState.actionsStats[action].timesSelected;
+    _lastObservationState.lastAction = action;
 
     return action;
 }
@@ -57,9 +58,12 @@ const std::vector<float> &AgentUCB<ActionsEnum>::Observe(const std::vector<float
 }
 
 template <typename ActionsEnum>
-void AgentUCB<ActionsEnum>::Reward(bool positive)
+void AgentUCB<ActionsEnum>::Reward(float reward)
 {
+    NextReward(_lastObservationState);
 
+    _lastObservationState.totalReward += _lastObservationState.nextReward;
+    _lastObservationState.actionsStats[_lastObservationState.lastAction].rewardSum += _lastObservationState.nextReward;
 }
 
 template <typename ActionsEnum>
@@ -84,6 +88,8 @@ ActionsEnum& AgentUCB<ActionsEnum>::UCB(void)
             maxUpperBound = actionStats.upperBound;
         }
     }
+    ++_lastObservationState.actionsStats[selectedAction].timesSelected;
+    _lastObservationState.lastAction = selectedAction;
 
     return selectedAction;
 }

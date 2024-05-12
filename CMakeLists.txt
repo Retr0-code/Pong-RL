@@ -63,6 +63,7 @@ set(BUILD_SHARED_LIBS OFF)
 set(SRC_MAIN
 	src/IEnviroment.cpp
     src/AgentUCB.cpp
+    src/PlayerUCB.cpp
     src/main.cpp
 )
 

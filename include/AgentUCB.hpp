@@ -23,6 +23,7 @@ public:
     {
         float totalReward;
         float nextReward;
+        ActionsEnum lastAction;
         std::unordered_map<ActionsEnum, ActionsStats> actionsStats;
     } StateActionReward;
 
@@ -32,7 +33,7 @@ public:
 
     virtual const std::vector<float>& Observe(const std::vector<float>& observation) override;
 
-    virtual void Reward(bool positive = true) override;
+    virtual void Reward(float reward = 1.f) override;
 
 private:
     ActionsEnum& UCB(void);
