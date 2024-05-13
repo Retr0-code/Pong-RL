@@ -65,10 +65,14 @@ public:
 
     static size_t SetSampling(size_t sampling);
 
+    void SetEpsilon(float epsilon);
+
+    size_t NextEpisode(void);
+    
+    size_t Episode(void) const;
+
 private:
     ActionsEnum UCB(void);
-
-    float NextReward(StateActionReward& state);
 
     std::vector<int64_t> SampleInput(const std::vector<float>& input);
 
@@ -81,6 +85,6 @@ private:
     float _totalReward;
     ActionsSpace _actions;
     static StateActionReward _emptyObservationState;
-    StateActionReward& _lastObservationState;
+    StateActionReward* _lastObservationState;
     std::unordered_map<std::vector<int64_t>, StateActionReward, Int64VectorHash> _states;
 };

@@ -20,6 +20,8 @@ public:
 		sf::Vector2u field = {500, 500}
 	);
 
+	virtual ~TheGameOfPong();
+	
 	void Run(void);
 
 	void Stop(void);
@@ -30,12 +32,12 @@ public:
 
 	static const sf::FloatRect& FieldRect(void);
 
-	virtual ~TheGameOfPong();
+	static void SetSpeedMultiplier(float factor = 1.f);
+
+	static float GetSpeedMultiplier(void);
 
 private:
-	void RunBackend(void);
-
-private:
+	static float _speedFactor;
 	static sf::Vector2u _field;
 	static sf::FloatRect _fieldRect;
 	std::shared_ptr<IPlayer> _player1;

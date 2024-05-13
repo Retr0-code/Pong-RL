@@ -5,12 +5,13 @@ PlayerUCB::PlayerUCB(const PlayerSide playerSide, const sf::Vector2f &paddleSize
 
 void PlayerUCB::CreateAgent(const EnviromentPong &enviroment)
 {
-    _agent = std::make_unique<AgentUCB<IPlayer::PlayerAction>>(enviroment.States(), enviroment.ActionSpace());
+    _agent = std::make_unique<AgentUCB<IPlayer::PlayerAction>>(enviroment.States(), enviroment.ActionSpace(), 0.07f, 0.96);
 }
 
 void PlayerUCB::Update(const sf::Time &deltaTime)
 {
     sf::RectangleShape& shape{reinterpret_cast<sf::RectangleShape&>(IGameObject::_shape->Get())};
+    sf::RectangleShape& ballShape{reinterpret_cast<sf::RectangleShape&>(_ball->Shape()->Get())};
     sf::FloatRect paddleHitbox{shape.getGlobalBounds()};
 
     _agent->Observe(Observation());
@@ -19,9 +20,11 @@ void PlayerUCB::Update(const sf::Time &deltaTime)
     if (!(TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top})
     && TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top + paddleHitbox.height})))
         direction = PlayerAction::Stay;
+
+    if (shape.getGlobalBounds().intersects(ballShape.getGlobalBounds()))
+        _agent->Reward(1.f);
     
-    UpdateVelocity(direction);
-    shape.move(0, GetVelocityLimit() * direction * deltaTime.asSeconds());
+    UpdateVelocity(direction, deltaTime);
 }
 
 void PlayerUCB::Reset(void)
@@ -33,6 +36,12 @@ void PlayerUCB::Reset(void)
 void PlayerUCB::UpdateScore(Reward reward)
 {
     _score += reward;
+    _agent->Reward(2.f * (reward == Reward::Score));
+}
+
+void PlayerUCB::SetEpsilon(float epsilon)
+{
+    _agent->SetEpsilon(epsilon);
 }
 
 std::vector<float> PlayerUCB::Observation(void) const

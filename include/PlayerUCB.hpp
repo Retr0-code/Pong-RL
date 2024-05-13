@@ -17,6 +17,8 @@ public:
 
     virtual void UpdateScore(Reward reward) override;
 
+    virtual void SetEpsilon(float epsilon);
+
 private:
     std::vector<float> Observation(void) const;
 

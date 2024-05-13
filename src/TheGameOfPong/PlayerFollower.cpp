@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "ElasticBall.hpp"
+#include "TheGameOfPong.hpp"
 #include "PlayerFollower.hpp"
 
 PlayerFollower::PlayerFollower(PlayerSide playerSide, const sf::Vector2f &paddleSize)
@@ -13,14 +14,16 @@ void PlayerFollower::Update(const sf::Time &deltaTime)
     sf::FloatRect playerHitbox{playerShape.getGlobalBounds()};
 
     PlayerAction direction{PlayerAction::Stay};
-    if (ballShape.getPosition().y > playerHitbox.top + playerHitbox.height && _ball->GetVelocity().x > 0)
+    bool ballDirection{_ball->GetVelocity().x > 0};
+    bool playerSide{playerHitbox.left > TheGameOfPong::Field().x / 2};
+
+    if (ballShape.getPosition().y > playerHitbox.top + playerHitbox.height && ballDirection == playerSide)
         direction = Down;
 
-    else if (ballShape.getPosition().y < playerHitbox.top && _ball->GetVelocity().x > 0)
+    else if (ballShape.getPosition().y < playerHitbox.top && ballDirection == playerSide)
         direction = Up;
 
-    UpdateVelocity(direction);
-    playerShape.move(0, GetVelocityLimit() * direction * deltaTime.asSeconds());
+    UpdateVelocity(direction, deltaTime);
 }
 
 void PlayerFollower::UpdateScore(Reward reward)

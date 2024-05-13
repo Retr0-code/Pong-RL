@@ -52,7 +52,7 @@ void ElasticBall::Update(const sf::Time& deltaTime)
         _velocity.y = std::clamp(_velocity.y + _player->GetCurrentVelocity() * _velocityLimit.x, -_velocityLimit.y, _velocityLimit.y);
     }
 
-    shape.move(_velocity * deltaTime.asSeconds());
+    shape.move(_velocity * deltaTime.asSeconds() * TheGameOfPong::GetSpeedMultiplier());
 }
 
 const sf::Vector2f &ElasticBall::GetVelocity(void)

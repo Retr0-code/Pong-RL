@@ -2,6 +2,7 @@
 
 #define WINDOW_NAME "Pong"
 
+float TheGameOfPong::_speedFactor{1.f};
 sf::Vector2u TheGameOfPong::_field{500, 500};
 sf::FloatRect TheGameOfPong::_fieldRect(sf::Vector2f(0.f, 0.f), sf::Vector2f(_field));
 
@@ -43,12 +44,17 @@ const sf::FloatRect &TheGameOfPong::FieldRect(void)
     return _fieldRect;
 }
 
+void TheGameOfPong::SetSpeedMultiplier(float factor)
+{
+    _speedFactor = factor;
+}
+
+float TheGameOfPong::GetSpeedMultiplier(void)
+{
+    return _speedFactor;
+}
+
 TheGameOfPong::~TheGameOfPong()
 {
     _engineThread.wait();
-}
-
-void TheGameOfPong::RunBackend(void)
-{
-    
 }
