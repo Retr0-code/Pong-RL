@@ -2,6 +2,8 @@
 #include "ElasticBall.hpp"
 #include "TheGameOfPong.hpp"
 
+sf::Vector2f ElasticBall::_velocityLimit{256.f, 512.f};
+
 ElasticBall::ElasticBall(const sf::Vector2u& center, float size)
     : IGameObject(sf::Vector2f(center), CreateShape(size)),
     _velocity(ELASTICBALL_VELOCITY), _velocityDefault(_velocity) {  }
@@ -47,7 +49,7 @@ void ElasticBall::Update(const sf::Time& deltaTime)
     if (_player)
     {
         _velocity.x = -_velocity.x;
-        _velocity.y = std::clamp(_velocity.y + _player->GetCurrentVelocity() * 256.f, -512.f, 512.f);
+        _velocity.y = std::clamp(_velocity.y + _player->GetCurrentVelocity() * _velocityLimit.x, -_velocityLimit.y, _velocityLimit.y);
     }
 
     shape.move(_velocity * deltaTime.asSeconds());
@@ -56,6 +58,11 @@ void ElasticBall::Update(const sf::Time& deltaTime)
 const sf::Vector2f &ElasticBall::GetVelocity(void)
 {
     return _velocity;
+}
+
+sf::Vector2f &ElasticBall::GetVelocityLimit(void)
+{
+    return _velocityLimit;
 }
 
 DrawableRect *ElasticBall::CreateShape(float size)

@@ -23,7 +23,7 @@ void IPlayer::SetVelocityLimit(const float velocity)
 	_velocityLimit = velocity;
 }
 
-float IPlayer::GetVelocityLimit(void) const
+float IPlayer::GetVelocityLimit(void)
 {
 	return _velocityLimit;
 }

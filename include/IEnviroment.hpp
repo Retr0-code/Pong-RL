@@ -1,14 +1,23 @@
 #pragma once
 #include <vector>
 
-template <typename ActionsEnum>
+template <typename ActionsEnum, typename T>
 class IEnviroment
 {
 public:
-    const std::vector<ActionsEnum>& ActionSpace(void) const;
+    using StateDimensions = std::vector<std::pair<T, T>>;
 
-    std::vector<float> Observation(void) const;
+    const std::vector<ActionsEnum>& ActionSpace(void) const
+    {
+        return _actionSpace;
+    }
+
+    virtual const StateDimensions& States(void) const
+    {
+        return _states;
+    }
 
 protected:
+    StateDimensions _states;
     std::vector<ActionsEnum> _actionSpace;
 };

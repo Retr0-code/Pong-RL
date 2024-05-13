@@ -35,7 +35,7 @@ public:
 
     static void SetVelocityLimit(const float velocity);
 
-    virtual float GetVelocityLimit(void) const;
+    static float GetVelocityLimit(void);
 
     virtual float GetCurrentVelocity(void) const;
     
