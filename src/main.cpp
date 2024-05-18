@@ -5,6 +5,7 @@
 #include "TheGameOfPong/TheGameOfPong.hpp"
 
 #include "PlayerUCB.hpp"
+#include "AgentLogger.hpp"
 
 #define PADDLE_SIZE {10, 40}
 
@@ -17,6 +18,8 @@ int main(void)
     TheGameOfPong pong(player1, player2);
     EnviromentPong enviroment;
     player2->CreateAgent(enviroment);
+    AgentLoggerCSV<float, IPlayer::PlayerAction> logPlayer(player2->Agent().get(), "player_ucb");
+    logPlayer(100, 1);
 
     pong.Run();
     int option;

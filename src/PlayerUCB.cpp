@@ -1,11 +1,14 @@
+#include <iostream>
 #include "PlayerUCB.hpp"
+
+using AgentPtr = std::shared_ptr<AgentUCB<IPlayer::PlayerAction>>;
 
 PlayerUCB::PlayerUCB(const PlayerSide playerSide, const sf::Vector2f &paddleSize)
     : IPlayer(playerSide, paddleSize) {  }
 
 void PlayerUCB::CreateAgent(const EnviromentPong &enviroment)
 {
-    _agent = std::make_unique<AgentUCB<IPlayer::PlayerAction>>(enviroment.States(), enviroment.ActionSpace(), 0.07f, 0.96);
+    _agent = std::make_shared<AgentUCB<IPlayer::PlayerAction>>(enviroment.States(), enviroment.ActionSpace(), 0.07f, 0.95f);
 }
 
 void PlayerUCB::Update(const sf::Time &deltaTime)
@@ -17,9 +20,13 @@ void PlayerUCB::Update(const sf::Time &deltaTime)
     _agent->Observe(Observation());
     PlayerAction direction{_agent->Action()};
 
-    if (!(TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top})
-    && TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top + paddleHitbox.height})))
-        direction = PlayerAction::Stay;
+    if (!TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top}))
+        while (direction == IPlayer::Up)
+            direction = _agent->Action();
+
+    if (!TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top + paddleHitbox.height}))
+        while (direction == IPlayer::Down)
+            direction = _agent->Action();
 
     if (shape.getGlobalBounds().intersects(ballShape.getGlobalBounds()))
         _agent->Reward(1.f);
@@ -30,18 +37,28 @@ void PlayerUCB::Update(const sf::Time &deltaTime)
 void PlayerUCB::Reset(void)
 {
     IPlayer::Reset();
+    _agent->Reset();
     _score = 0;
 }
 
 void PlayerUCB::UpdateScore(Reward reward)
 {
     _score += reward;
-    _agent->Reward(2.f * (reward == Reward::Score));
+    
+    if (reward == Reward::Score)
+        _agent->Reward(2.f);
+    else
+        _agent->Reward(-10.f);
 }
 
 void PlayerUCB::SetEpsilon(float epsilon)
 {
     _agent->SetEpsilon(epsilon);
+}
+
+const AgentPtr &PlayerUCB::Agent(void)
+{
+    return _agent;
 }
 
 std::vector<float> PlayerUCB::Observation(void) const
@@ -52,6 +69,11 @@ std::vector<float> PlayerUCB::Observation(void) const
     sf::Vector2f playerPosition{playerShape.getPosition()};
     const sf::Vector2f& ballVelocity{_ball->GetVelocity()};
 
+    // return {
+    //     playerPosition.y,
+    //     ballVelocity.x > 0 ? AgentUCB<IPlayer::PlayerAction>::Sampling() : -AgentUCB<IPlayer::PlayerAction>::Sampling(),
+    //     ballVelocity.y / ballVelocity.x
+    // };
     return {
         ballPosition.x,
         ballPosition.y,

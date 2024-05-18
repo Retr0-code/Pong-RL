@@ -34,6 +34,13 @@ void TheGameOfPong::Stop(void)
     _engineThread.wait();
 }
 
+void TheGameOfPong::Reset(void)
+{
+    _player1->Reset();
+    _player2->Reset();
+    _ball->Reset();
+}
+
 const sf::Vector2u& TheGameOfPong::Field(void)
 {
     return _field;

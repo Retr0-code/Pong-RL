@@ -5,9 +5,10 @@ template <typename ActionsEnum, typename T>
 class IEnviroment
 {
 public:
+    using ActionsSpace = std::set<ActionsEnum>;
     using StateDimensions = std::vector<std::pair<T, T>>;
 
-    const std::vector<ActionsEnum>& ActionSpace(void) const
+    const ActionsSpace& ActionSpace(void) const
     {
         return _actionSpace;
     }
@@ -19,5 +20,5 @@ public:
 
 protected:
     StateDimensions _states;
-    std::vector<ActionsEnum> _actionSpace;
+    ActionsSpace _actionSpace;
 };

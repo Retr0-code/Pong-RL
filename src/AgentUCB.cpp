@@ -17,15 +17,12 @@ AgentUCB<ActionsEnum>::StateActionReward AgentUCB<ActionsEnum>::_emptyObservatio
 
 template<typename ActionsEnum>
 AgentUCB<ActionsEnum>::AgentUCB(const StateDimensions &dimensions, const ActionsSpace &actions, float epsilon, float rewardRatio)
-    : _inputsAmount(dimensions.size()), _epsilon(epsilon),
-    _actions(actions), _rewardRatio(rewardRatio), _totalReward(0.f),
+    : _inputsAmount(dimensions.size()), _statesAmount(StatesTotalSize(dimensions)), _rewardRatioOriginal(rewardRatio),
+    _epsilon(epsilon), _actions(actions), _rewardRatio(rewardRatio), _totalReward(0.f),
     _episode(0), _lastObservationState(&_emptyObservationState)
-{
-    size_t totalSize{1};
-    for (auto& borders : dimensions)
-        totalSize *= (std::abs(borders.first) + std::abs(borders.second)) / _sampling;
 
-    _states.reserve(totalSize);
+{
+    _states.reserve(_statesAmount);
     _lastObservationState = &_states[std::vector<int64_t>(dimensions.size())];
 }
 
@@ -33,13 +30,10 @@ template <typename ActionsEnum>
 ActionsEnum AgentUCB<ActionsEnum>::Action(void)
 {
     if (_epsilon == 0.0)
-    {
-        ++_episode;
         return UCB();
-    }
 
     // Inititialize with last action in vector
-    ActionsEnum action{*(_actions.end() - 1)};
+    ActionsEnum action{*_actions.begin()};
 
     std::random_device randomDevice;
     std::default_random_engine rng(randomDevice());
@@ -54,8 +48,6 @@ ActionsEnum AgentUCB<ActionsEnum>::Action(void)
     }
     else 
         action = UCB();
-
-    ++_episode;
 
     return action;
 }
@@ -81,12 +73,16 @@ void AgentUCB<ActionsEnum>::Reward(float reward)
     
     _totalReward += reward * _rewardRatio;
     _lastObservationState->totalReward += reward * _rewardRatio;
-    // ActionsStats* action{&_lastObservationState->actionsStats[_lastObservationState->lastAction]};
-    // action->rewardSum += reward * _rewardRatio;
     _lastObservationState->actionsStats[_lastObservationState->lastAction].rewardSum += reward * _rewardRatio;
     _rewardRatio *= _rewardRatio;
 
-    std::cout << _totalReward << '\n';
+    NextEpisode();
+}
+
+template <typename ActionsEnum>
+float AgentUCB<ActionsEnum>::GetReward(void) const
+{
+    return _totalReward;
 }
 
 template <typename ActionsEnum>
@@ -96,9 +92,20 @@ size_t AgentUCB<ActionsEnum>::Episode(void) const
 }
 
 template <typename ActionsEnum>
+void AgentUCB<ActionsEnum>::Reset(void)
+{
+    _totalReward = 0;
+    _rewardRatio = _rewardRatioOriginal;
+    _episode = 0;
+    _states.clear();
+    _states.reserve(_statesAmount);
+    _lastObservationState = &_states[std::vector<int64_t>(_inputsAmount)];
+}
+
+template <typename ActionsEnum>
 ActionsEnum AgentUCB<ActionsEnum>::UCB(void)
 {
-    ActionsEnum selectedAction{_actions[0]};
+    ActionsEnum selectedAction{*_actions.begin()};
     float maxUpperBound{0};
     for (auto& [action, actionStats] : _lastObservationState->actionsStats)
     {
@@ -120,6 +127,7 @@ ActionsEnum AgentUCB<ActionsEnum>::UCB(void)
     ++_lastObservationState->actionsStats[selectedAction].timesSelected;
     _lastObservationState->lastAction = selectedAction;
 
+    // std::cout << maxUpperBound << '\n';
     return selectedAction;
 }
 
@@ -129,6 +137,16 @@ std::vector<int64_t> AgentUCB<ActionsEnum>::SampleInput(const std::vector<float>
     std::vector<int64_t> sampled(input.size());
     std::transform(input.begin(), input.end(), sampled.begin(), [&](float x){return int64_t(x / _sampling);});
     return sampled;
+}
+
+template <typename ActionsEnum>
+size_t AgentUCB<ActionsEnum>::StatesTotalSize(const StateDimensions &dimensions)
+{
+    size_t totalSize{1};
+    for (auto& borders : dimensions)
+        totalSize *= (std::abs(borders.first) + std::abs(borders.second)) / _sampling;
+    
+    return totalSize;
 }
 
 template <typename ActionsEnum>

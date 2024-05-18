@@ -1,5 +1,7 @@
 #pragma once
+#include <set>
 #include <vector>
+#include <atomic>
 #include <unordered_map>
 
 #include "IAgent.hpp"
@@ -12,7 +14,6 @@ public:
         size_t hash{1};
         for (float x : input)
             hash = 31 * hash + x;
-            // hash = 31 * hash + *reinterpret_cast<int*>(&x);
         
         hash ^= (hash >> 20) ^ (hash >> 12);
         return hash ^ (hash >> 7) ^ (hash >> 4);
@@ -24,7 +25,7 @@ class AgentUCB
     : public IAgent<float, ActionsEnum>
 {
 public:
-    using ActionsSpace = std::vector<ActionsEnum>;
+    using ActionsSpace = std::set<ActionsEnum>;
     using StateDimensions = std::vector<std::pair<int64_t, int64_t>>;
 
     struct ActionsStats
@@ -45,7 +46,7 @@ public:
 
         StateActionReward(void) : totalReward(0.f), nextReward(0.f) {  }
 
-        StateActionReward(const std::vector<ActionsEnum>& actionsSpace) : totalReward(0.f), nextReward(0.f)
+        StateActionReward(const ActionsSpace& actionsSpace) : totalReward(0.f), nextReward(0.f)
         {
             ActionsStats empty;
             for (auto& action : actionsSpace)
@@ -61,29 +62,38 @@ public:
 
     virtual void Reward(float reward = 1.f) override;
 
+    virtual float GetReward(void) const override;
+
     static size_t Sampling(void);
 
     static size_t SetSampling(size_t sampling);
 
-    void SetEpsilon(float epsilon);
+    virtual void SetEpsilon(float epsilon);
 
-    size_t NextEpisode(void);
+    virtual size_t NextEpisode(void) override;
     
-    size_t Episode(void) const;
+    virtual size_t Episode(void) const override;
+
+    virtual void Reset(void) override;
 
 private:
     ActionsEnum UCB(void);
 
     std::vector<int64_t> SampleInput(const std::vector<float>& input);
 
+    size_t StatesTotalSize(const StateDimensions& dimensions);
+
 private:
     static size_t _sampling;
-    size_t _episode;
+
+    std::atomic_size_t _episode;
     size_t _inputsAmount;
+    const size_t _statesAmount;
     float _epsilon;
     float _rewardRatio;
-    float _totalReward;
-    ActionsSpace _actions;
+    const float _rewardRatioOriginal;
+    std::atomic<float> _totalReward;
+    const ActionsSpace _actions;
     static StateActionReward _emptyObservationState;
     StateActionReward* _lastObservationState;
     std::unordered_map<std::vector<int64_t>, StateActionReward, Int64VectorHash> _states;

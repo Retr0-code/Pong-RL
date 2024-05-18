@@ -9,6 +9,16 @@ EnviromentPong::EnviromentPong(void)
         IPlayer::PlayerAction::Up
     };
 
+    // _states = {
+    //     {0, TheGameOfPong::Field().y}, // Paddle's position changes from 0 to TheGameOfPong::Field().y
+    //     {-AgentUCB<IPlayer::PlayerAction>::Sampling(),
+    //         AgentUCB<IPlayer::PlayerAction>::Sampling()
+    //     },    // Ball's X velocity changes only direction
+    //     {-ElasticBall::GetVelocityLimit().y / ElasticBall::GetVelocityLimit().x,
+    //         ElasticBall::GetVelocityLimit().y / ElasticBall::GetVelocityLimit().x
+    //     } // Ball's Y velocity changes from -y to y
+    // };
+
     _states = {
         {0, TheGameOfPong::Field().x}, // Ball's position changes from 0 to TheGameOfPong::Field().x
         {0, TheGameOfPong::Field().y}, // Ball's position changes from 0 to TheGameOfPong::Field().y

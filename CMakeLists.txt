@@ -64,6 +64,7 @@ set(SRC_MAIN
 	src/EnviromentPong.cpp
     src/AgentUCB.cpp
     src/PlayerUCB.cpp
+    src/AgentLogger.cpp
     src/main.cpp
 )
 
@@ -74,7 +75,7 @@ add_subdirectory(tests)
 add_executable(${PROJECT_NAME} ${SRC_MAIN})
 target_include_directories(${PROJECT_NAME} PUBLIC ${Pong-RL_SOURCE_DIR}/include)
 
-target_link_libraries(${PROJECT_NAME} LibMath LibTheGameOfPong)
+target_link_libraries(${PROJECT_NAME} LibMath LibTheGameOfPong pthread)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 message(STATUS "WARNING! Installation prefix ${CMAKE_INSTALL_PREFIX}")

@@ -7,6 +7,8 @@ class PlayerUCB
     : public IPlayer
 {
 public:
+    using AgentPtr = std::shared_ptr<AgentUCB<IPlayer::PlayerAction>>;
+
     PlayerUCB(const PlayerSide playerSide, const sf::Vector2f& paddleSize);
 
     void CreateAgent(const EnviromentPong& enviroment);
@@ -19,9 +21,11 @@ public:
 
     virtual void SetEpsilon(float epsilon);
 
+    virtual const AgentPtr& Agent(void);
+
 private:
     std::vector<float> Observation(void) const;
 
 private:
-    std::unique_ptr<AgentUCB<IPlayer::PlayerAction>> _agent;
+    AgentPtr _agent;
 };
