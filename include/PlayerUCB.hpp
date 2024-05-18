@@ -11,7 +11,7 @@ public:
 
     PlayerUCB(const PlayerSide playerSide, const sf::Vector2f& paddleSize);
 
-    void CreateAgent(const EnviromentPong& enviroment);
+    void CreateAgent(const EnvironmentPong& enviroment);
 
 	virtual void Update(const sf::Time& deltaTime) override;
 

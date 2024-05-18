@@ -6,7 +6,7 @@ using AgentPtr = std::shared_ptr<AgentUCB<IPlayer::PlayerAction>>;
 PlayerUCB::PlayerUCB(const PlayerSide playerSide, const sf::Vector2f &paddleSize)
     : IPlayer(playerSide, paddleSize) {  }
 
-void PlayerUCB::CreateAgent(const EnviromentPong &enviroment)
+void PlayerUCB::CreateAgent(const EnvironmentPong &enviroment)
 {
     _agent = std::make_shared<AgentUCB<IPlayer::PlayerAction>>(enviroment.States(), enviroment.ActionSpace(), 0.07f, 0.95f);
 }
@@ -29,7 +29,10 @@ void PlayerUCB::Update(const sf::Time &deltaTime)
             direction = _agent->Action();
 
     if (shape.getGlobalBounds().intersects(ballShape.getGlobalBounds()))
+    {
         _agent->Reward(1.f);
+        _agent->NextEpisode();
+    }
     
     UpdateVelocity(direction, deltaTime);
 }
@@ -45,10 +48,8 @@ void PlayerUCB::UpdateScore(Reward reward)
 {
     _score += reward;
     
-    if (reward == Reward::Score)
-        _agent->Reward(2.f);
-    else
-        _agent->Reward(-10.f);
+    _agent->Reward(2.f * reward);
+    _agent->NextEpisode();
 }
 
 void PlayerUCB::SetEpsilon(float epsilon)

@@ -35,16 +35,20 @@ public:
         const std::string& fileMark = "rl_agent"
     );
 
+    void SetFileMark(const std::string& fileMark);
+
     void Stop(void);
+
+    bool Running(void) const;
 
 protected:
     void OpenHandle(const std::string& extension);
 
 protected:
-    bool _run;
+    std::atomic_bool _run;
     IAgentPtr _agent;
     std::string _fileMark;
-    std::thread _logger;
+    std::jthread _logger;
     std::ofstream _outHandle;
     std::string _extension;
 };

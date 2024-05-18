@@ -39,6 +39,7 @@ void TheGameOfPong::Reset(void)
     _player1->Reset();
     _player2->Reset();
     _ball->Reset();
+    _scoreboard->Reset();
 }
 
 const sf::Vector2u& TheGameOfPong::Field(void)

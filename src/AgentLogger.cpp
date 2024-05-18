@@ -37,9 +37,21 @@ IAgentLogger<T, ActionEnum>* IAgentLogger<T, ActionEnum>::LoggerFactory(ExportTy
 }
 
 template <typename T, typename ActionEnum>
+void IAgentLogger<T, ActionEnum>::SetFileMark(const std::string &fileMark)
+{
+    _fileMark = fileMark;
+}
+
+template <typename T, typename ActionEnum>
 void IAgentLogger<T, ActionEnum>::Stop(void)
 {
     _run = false;
+}
+
+template <typename T, typename ActionEnum>
+bool IAgentLogger<T, ActionEnum>::Running(void) const
+{
+    return _run;
 }
 
 template <typename T, typename ActionEnum>
@@ -68,7 +80,7 @@ template <typename T, typename ActionEnum>
 void AgentLoggerCSV<T, ActionEnum>::operator()(size_t episodes, size_t step)
 {
     this->OpenHandle(".csv");
-    this->_logger = std::thread(&AgentLoggerCSV<T, ActionEnum>::LogCSV, this, episodes, step);
+    this->_logger = std::jthread(&AgentLoggerCSV<T, ActionEnum>::LogCSV, this, episodes, step);
 }
 
 template <typename T, typename ActionEnum>
@@ -78,6 +90,7 @@ void AgentLoggerCSV<T, ActionEnum>::LogCSV(size_t episodes, size_t step)
     size_t prevEpisode{0xffffffff};
 
     this->_outHandle << "episode;reward;\n";
+    this->_run = true;
     while (currentEpisode <= episodes && this->_run)
     {
         if (currentEpisode % step == 0 && currentEpisode != prevEpisode)
@@ -86,6 +99,9 @@ void AgentLoggerCSV<T, ActionEnum>::LogCSV(size_t episodes, size_t step)
         prevEpisode = currentEpisode;
         currentEpisode = this->_agent->Episode();
     }
+    this->_outHandle.close();
+    this->_run = false;
 }
 
+template class IAgentLogger<float, IPlayer::PlayerAction>;
 template class AgentLoggerCSV<float, IPlayer::PlayerAction>;

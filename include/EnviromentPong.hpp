@@ -3,12 +3,12 @@
 #include "IEnviroment.hpp"
 #include "TheGameOfPong.hpp"
 
-class EnviromentPong
-    : public IEnviroment<IPlayer::PlayerAction, int64_t>
+class EnvironmentPong
+    : public IEnvironment<IPlayer::PlayerAction, int64_t>
 {
 public:
     using ActionsSpace = std::set<IPlayer::PlayerAction>;
     using StateDimensions = std::vector<std::pair<int64_t, int64_t>>;
 
-    EnviromentPong(void);
+    EnvironmentPong(void);
 };

@@ -75,8 +75,6 @@ void AgentUCB<ActionsEnum>::Reward(float reward)
     _lastObservationState->totalReward += reward * _rewardRatio;
     _lastObservationState->actionsStats[_lastObservationState->lastAction].rewardSum += reward * _rewardRatio;
     _rewardRatio *= _rewardRatio;
-
-    NextEpisode();
 }
 
 template <typename ActionsEnum>

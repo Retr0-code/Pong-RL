@@ -2,7 +2,7 @@
 #include <vector>
 
 template <typename ActionsEnum, typename T>
-class IEnviroment
+class IEnvironment
 {
 public:
     using ActionsSpace = std::set<ActionsEnum>;
