@@ -1,5 +1,5 @@
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE FunctionContextTest 
+#define BOOST_TEST_MODULE DifferentEpsilonExperiment 
 
 #include <boost/test/unit_test.hpp>
 
@@ -17,8 +17,9 @@ BOOST_AUTO_TEST_CASE(experiment_DifferentEpsilon)
     std::shared_ptr<IPlayer> player1{ new PlayerFollower(IPlayer::Left, PADDLE_SIZE) };
     std::shared_ptr<PlayerUCB> player2{ new PlayerUCB(IPlayer::Right, PADDLE_SIZE) };
     TheGameOfPong pong(player1, player2);
-    EnvironmentPong enviroment;
     TheGameOfPong::SetSpeedMultiplier(4);
+    
+    EnvironmentPong6I enviroment;
     player2->CreateAgent(enviroment);
     player2->SetEpsilon(0.1);
 

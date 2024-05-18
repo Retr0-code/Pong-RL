@@ -4,11 +4,13 @@
 using AgentPtr = std::shared_ptr<AgentUCB<IPlayer::PlayerAction>>;
 
 PlayerUCB::PlayerUCB(const PlayerSide playerSide, const sf::Vector2f &paddleSize)
-    : IPlayer(playerSide, paddleSize) {  }
+    : IPlayer(playerSide, paddleSize), _observationSize(0) {  }
 
 void PlayerUCB::CreateAgent(const EnvironmentPong &enviroment)
 {
+    _agent.reset();
     _agent = std::make_shared<AgentUCB<IPlayer::PlayerAction>>(enviroment.States(), enviroment.ActionSpace(), 0.07f, 0.95f);
+    _observationSize = enviroment.States().size();
 }
 
 void PlayerUCB::Update(const sf::Time &deltaTime)
@@ -70,16 +72,27 @@ std::vector<float> PlayerUCB::Observation(void) const
     sf::Vector2f playerPosition{playerShape.getPosition()};
     const sf::Vector2f& ballVelocity{_ball->GetVelocity()};
 
-    // return {
-    //     playerPosition.y,
-    //     ballVelocity.x > 0 ? AgentUCB<IPlayer::PlayerAction>::Sampling() : -AgentUCB<IPlayer::PlayerAction>::Sampling(),
-    //     ballVelocity.y / ballVelocity.x
-    // };
-    return {
-        ballPosition.x,
-        ballPosition.y,
-        playerPosition.y,
-        ballVelocity.x > 0 ? AgentUCB<IPlayer::PlayerAction>::Sampling() : -AgentUCB<IPlayer::PlayerAction>::Sampling(),
-        ballVelocity.y / ballVelocity.x
-    };
+    std::vector<float> observation;
+    switch (_observationSize)
+    {
+        case 3:
+            observation = {
+                playerPosition.y,
+                ballVelocity.x > 0 ? AgentUCB<IPlayer::PlayerAction>::Sampling() : -AgentUCB<IPlayer::PlayerAction>::Sampling(),
+                ballVelocity.y / ballVelocity.x
+            };
+            break;
+        case 5:
+            observation = {
+                ballPosition.x,
+                ballPosition.y,
+                playerPosition.y,
+                ballVelocity.x > 0 ? AgentUCB<IPlayer::PlayerAction>::Sampling() : -AgentUCB<IPlayer::PlayerAction>::Sampling(),
+                ballVelocity.y / ballVelocity.x
+            };
+            break;
+        default:
+            throw std::runtime_error{"Error in [std::vector<float> PlayerUCB::Observation(void) const]:\n\tObservation does not match the environment."};
+    }
+    return observation;
 }

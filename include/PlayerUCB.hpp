@@ -8,6 +8,7 @@ class PlayerUCB
 {
 public:
     using AgentPtr = std::shared_ptr<AgentUCB<IPlayer::PlayerAction>>;
+    using EnvironmentPong = IEnvironment<IPlayer::PlayerAction, int64_t>;
 
     PlayerUCB(const PlayerSide playerSide, const sf::Vector2f& paddleSize);
 
@@ -28,4 +29,5 @@ private:
 
 private:
     AgentPtr _agent;
+    size_t _observationSize;
 };
