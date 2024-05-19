@@ -7,7 +7,7 @@ add_executable(MatrixTests MatrixTests.cpp)
 add_executable(MathTests MathTests.cpp)
 add_executable(FunctionContextTests FunctionContextTests.cpp)
 add_executable(DifferentEpsilonExperiment
-    DifferentEnvironmentsExperiment.cpp
+    DifferentEpsilonExperiment.cpp
     ${Pong-RL_SOURCE_DIR}/src/AgentUCB.cpp
     ${Pong-RL_SOURCE_DIR}/src/AgentLogger.cpp
     ${Pong-RL_SOURCE_DIR}/src/PlayerUCB.cpp
@@ -35,6 +35,6 @@ target_link_libraries(DifferentEnvironmentsExperiment boost_unit_test_framework 
 
 add_test(NAME MatrixTests COMMAND MatrixTests --log_level=all)
 add_test(NAME MathTests COMMAND MathTests --log_level=all)
-add_test(NAME FunctionContextTests COMMAND MathTests --log_level=all)
-add_test(NAME DifferentEpsilonExperiment COMMAND MathTests --log_level=all)
-add_test(NAME DifferentEnvironmentsExperiment COMMAND MathTests --log_level=all)
+add_test(NAME FunctionContextTests COMMAND FunctionContextTests --log_level=all)
+add_test(NAME DifferentEpsilonExperiment COMMAND DifferentEpsilonExperiment --log_level=all)
+add_test(NAME DifferentEnvironmentsExperiment COMMAND DifferentEnvironmentsExperiment --log_level=all)

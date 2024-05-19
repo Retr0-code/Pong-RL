@@ -12,18 +12,18 @@
 
 #define PADDLE_SIZE {10, 40}
 
-BOOST_AUTO_TEST_CASE(experiment_DifferentEpsilon)
+BOOST_AUTO_TEST_CASE(experiment_DifferentEnvironments)
 {
     std::shared_ptr<IPlayer> player1{ new PlayerFollower(IPlayer::Left, PADDLE_SIZE) };
     std::shared_ptr<PlayerUCB> player2{ new PlayerUCB(IPlayer::Right, PADDLE_SIZE) };
     TheGameOfPong pong(player1, player2);
     TheGameOfPong::SetSpeedMultiplier(4);
 
-    EnvironmentPong6I enviroment6I;
+    EnvironmentPong5I enviroment6I;
     player2->CreateAgent(enviroment6I);
     player2->SetEpsilon(0.8);
-    AgentLoggerCSV<float, IPlayer::PlayerAction> logPlayer(player2->Agent().get(), "ucb_env6");
-    logPlayer(10000, 10);
+    AgentLoggerCSV<float, IPlayer::PlayerAction> logPlayer(player2->Agent().get(), "ucb_env5");
+    logPlayer(1000, 10);
     pong.Run();
 
     while (logPlayer.Running());
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(experiment_DifferentEpsilon)
     player2->CreateAgent(enviroment3I);
     player2->SetEpsilon(0.8);
     logPlayer.SetFileMark("ucb_env3");
-    logPlayer(10000, 10);
+    logPlayer(1000, 10);
     pong.Run();
     
     while (logPlayer.Running());

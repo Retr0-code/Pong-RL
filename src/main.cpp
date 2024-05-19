@@ -16,7 +16,7 @@ int main(void)
     std::shared_ptr<IPlayer> player1{ new PlayerFollower(IPlayer::Left, PADDLE_SIZE) };
     std::shared_ptr<PlayerUCB> player2{ new PlayerUCB(IPlayer::Right, PADDLE_SIZE) };
     TheGameOfPong pong(player1, player2);
-    EnvironmentPong6I enviroment;
+    EnvironmentPong5I enviroment;
     player2->CreateAgent(enviroment);
     AgentLoggerCSV<float, IPlayer::PlayerAction> logPlayer(player2->Agent().get(), "player_ucb");
     logPlayer(100, 1);

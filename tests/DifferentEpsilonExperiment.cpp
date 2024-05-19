@@ -1,6 +1,7 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE DifferentEpsilonExperiment 
 
+#include <vector>
 #include <boost/test/unit_test.hpp>
 
 #include "TheGameOfPong/PlayerHuman.hpp"
@@ -19,44 +20,29 @@ BOOST_AUTO_TEST_CASE(experiment_DifferentEpsilon)
     TheGameOfPong pong(player1, player2);
     TheGameOfPong::SetSpeedMultiplier(4);
     
-    EnvironmentPong6I enviroment;
+    EnvironmentPong5I enviroment;
     player2->CreateAgent(enviroment);
-    player2->SetEpsilon(0.1);
 
     // Epsilon = 0.1
 
-    AgentLoggerCSV<float, IPlayer::PlayerAction> logPlayer(player2->Agent().get(), "ucb_eps_01");
-    logPlayer(100, 1);
-    pong.Run();
+    std::vector<std::pair<float, const char*>> testCases{
+        {0.1, "ucb_eps_01"},
+        {0.5, "ucb_eps_05"},
+        {0.8, "ucb_eps_08"}
+    };
 
-    while (logPlayer.Running());
-    BOOST_TEST(!logPlayer.Running());
+    AgentLoggerCSV<float, IPlayer::PlayerAction> logPlayer(player2->Agent().get());
+    for (auto [epsilon, fileMark] : testCases)
+    {
+        logPlayer.SetFileMark(fileMark);
+        player2->SetEpsilon(epsilon);
+        
+        logPlayer(100, 1);
+        pong.Run();
 
-    // Epsilon = 0.5
-
-    pong.Stop();
-    pong.Reset();
-    player2->SetEpsilon(0.5);
-
-    logPlayer.SetFileMark("ucb_eps_05");
-    logPlayer(100, 1);
-    pong.Run();
-
-    while (logPlayer.Running());
-    BOOST_TEST(!logPlayer.Running());
-
-    // Epsilon = 0.8
-
-    pong.Stop();
-    pong.Reset();
-    player2->SetEpsilon(0.8);
-
-    logPlayer.SetFileMark("ucb_eps_08");
-    logPlayer(100, 1);
-    pong.Run();
-    
-    while (logPlayer.Running());
-    BOOST_TEST(!logPlayer.Running());
-
-    pong.Stop();
+        while (logPlayer.Running());
+        BOOST_TEST(!logPlayer.Running());
+        pong.Stop();
+        pong.Reset();
+    }
 }

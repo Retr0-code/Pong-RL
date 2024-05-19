@@ -1,7 +1,7 @@
 #include "AgentUCB.hpp"
 #include "EnviromentPong.hpp"
 
-EnvironmentPong6I::EnvironmentPong6I(void)
+EnvironmentPong5I::EnvironmentPong5I(void)
 {
     _actionSpace = {
         IPlayer::PlayerAction::Down,
