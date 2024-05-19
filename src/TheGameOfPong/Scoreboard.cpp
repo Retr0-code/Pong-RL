@@ -13,8 +13,6 @@ void Scoreboard::Reset(void)
 {
     sf::Text& sfText{reinterpret_cast<sf::Text&>(IGameObject::_shape->Get())};
     sfText.setString("0 : 0");
-    _leftPlayer->Reset();
-    _rightPlayer->Reset();
 }
 
 void Scoreboard::Update(const sf::Time &deltaTime)

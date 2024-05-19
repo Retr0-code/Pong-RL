@@ -1,3 +1,4 @@
+#include <iostream>
 #include <type_traits>
 #include "TheGameOfPong.hpp"
 #include "PlayerHuman.hpp"
@@ -26,9 +27,7 @@ void PlayerHuman<T>::Update(const sf::Time& deltaTime)
     && TheGameOfPong::FieldRect().contains({shape.getPosition().x, paddleHitbox.top + paddleHitbox.height}))
         direction = PlayerAction::Down;
 
-    UpdateVelocity(direction);
-
-    shape.move(0, GetVelocityLimit() * direction * deltaTime.asSeconds());
+    UpdateVelocity(direction, deltaTime);
 }
 
 template <typename T>

@@ -24,6 +24,8 @@ public:
 
     virtual const sf::Vector2f& GetVelocity(void);
 
+    static sf::Vector2f& GetVelocityLimit(void);
+
 protected:
     static DrawableRect* CreateShape(float size);
 
@@ -34,5 +36,6 @@ private:
     sf::Vector2f _velocityDefault;
     IPlayerShared _leftPlayer;
     IPlayerShared _rightPlayer;
+    static sf::Vector2f _velocityLimit;
 };
 

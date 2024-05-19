@@ -11,7 +11,7 @@ set(INSTALL_PREFIX /usr/local/bin CACHE PATH "Path for installed binaries")
 set(BUILD_ARCH "amd64" CACHE STRING "Build architecture amd64/i386")
 set(BUILD_CPU "RELEASE" CACHE STRING "Build target mode RELEASE/DEBUG")
 
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 20)
 
 # Setting install prefix
 set(CMAKE_INSTALL_PREFIX ${INSTALL_PREFIX})
@@ -61,7 +61,10 @@ endif()
 set(BUILD_SHARED_LIBS OFF)
 
 set(SRC_MAIN
-	src/IEnviroment.cpp
+	src/EnvironmentPong.cpp
+    src/AgentUCB.cpp
+    src/PlayerUCB.cpp
+    src/AgentLogger.cpp
     src/main.cpp
 )
 
@@ -72,7 +75,7 @@ add_subdirectory(tests)
 add_executable(${PROJECT_NAME} ${SRC_MAIN})
 target_include_directories(${PROJECT_NAME} PUBLIC ${Pong-RL_SOURCE_DIR}/include)
 
-target_link_libraries(${PROJECT_NAME} LibMath LibTheGameOfPong)
+target_link_libraries(${PROJECT_NAME} LibMath LibTheGameOfPong pthread)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 message(STATUS "WARNING! Installation prefix ${CMAKE_INSTALL_PREFIX}")

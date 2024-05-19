@@ -23,7 +23,7 @@ void IPlayer::SetVelocityLimit(const float velocity)
 	_velocityLimit = velocity;
 }
 
-float IPlayer::GetVelocityLimit(void) const
+float IPlayer::GetVelocityLimit(void)
 {
 	return _velocityLimit;
 }
@@ -54,7 +54,7 @@ void IPlayer::SetBall(std::shared_ptr<ElasticBall> ball)
 	_ball = ball;
 }
 
-void IPlayer::UpdateVelocity(PlayerAction action)
+void IPlayer::UpdateVelocity(PlayerAction action, sf::Time deltaTime)
 {
 	switch (action)
 	{
@@ -67,6 +67,9 @@ void IPlayer::UpdateVelocity(PlayerAction action)
 		default:
         	_currentVelocity *= _acceleration;
 	}
+    reinterpret_cast<sf::Shape&>(_shape->Get()).move(
+		0, GetVelocityLimit() * deltaTime.asSeconds() * TheGameOfPong::GetSpeedMultiplier() * action
+	);
 }
 
 DrawableRect *IPlayer::CreateShape(const sf::Vector2f &size)

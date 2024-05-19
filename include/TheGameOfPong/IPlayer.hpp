@@ -35,7 +35,7 @@ public:
 
     static void SetVelocityLimit(const float velocity);
 
-    virtual float GetVelocityLimit(void) const;
+    static float GetVelocityLimit(void);
 
     virtual float GetCurrentVelocity(void) const;
     
@@ -54,7 +54,7 @@ protected:
 
     static sf::Vector2f ChooseSide(const PlayerSide side);
 
-    virtual void UpdateVelocity(PlayerAction action);
+    virtual void UpdateVelocity(PlayerAction action, sf::Time deltaTime);
 
 protected:
     uint16_t _score;
