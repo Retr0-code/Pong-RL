@@ -26,6 +26,12 @@ void PlayerFollower::Update(const sf::Time &deltaTime)
     UpdateVelocity(direction, deltaTime);
 }
 
+void PlayerFollower::Reset(void)
+{
+    IPlayer::Reset();
+    _score = 0;
+}
+
 void PlayerFollower::UpdateScore(Reward reward)
 {
     _score += reward;
