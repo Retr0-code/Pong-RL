@@ -6,6 +6,10 @@
 
 class IPlayer;
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846f
+#endif
+
 #define ELASTICBALL_VELOCITY {256.f, 256.f * std::sin(M_PI / 12.f)}
 
 class ElasticBall :

@@ -78,7 +78,7 @@ std::vector<float> PlayerUCB::Observation(void) const
         case 3:
             observation = {
                 playerPosition.y,
-                ballVelocity.x > 0 ? AgentUCB<IPlayer::PlayerAction>::Sampling() : -AgentUCB<IPlayer::PlayerAction>::Sampling(),
+                ballVelocity.x > 0 ? float(AgentUCB<IPlayer::PlayerAction>::Sampling()) : -int64_t(AgentUCB<IPlayer::PlayerAction>::Sampling()),
                 ballVelocity.y / ballVelocity.x
             };
             break;
@@ -87,7 +87,7 @@ std::vector<float> PlayerUCB::Observation(void) const
                 ballPosition.x,
                 ballPosition.y,
                 playerPosition.y,
-                ballVelocity.x > 0 ? AgentUCB<IPlayer::PlayerAction>::Sampling() : -AgentUCB<IPlayer::PlayerAction>::Sampling(),
+                ballVelocity.x > 0 ? float(AgentUCB<IPlayer::PlayerAction>::Sampling()) : -int64_t(AgentUCB<IPlayer::PlayerAction>::Sampling()),
                 ballVelocity.y / ballVelocity.x
             };
             break;

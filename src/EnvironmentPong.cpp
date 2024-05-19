@@ -13,7 +13,7 @@ EnvironmentPong5I::EnvironmentPong5I(void)
         {0, TheGameOfPong::Field().x}, // Ball's position changes from 0 to TheGameOfPong::Field().x
         {0, TheGameOfPong::Field().y}, // Ball's position changes from 0 to TheGameOfPong::Field().y
         {0, TheGameOfPong::Field().y}, // Paddle's position changes from 0 to TheGameOfPong::Field().y
-        {-AgentUCB<IPlayer::PlayerAction>::Sampling(),
+        {-int64_t(AgentUCB<IPlayer::PlayerAction>::Sampling()),
             AgentUCB<IPlayer::PlayerAction>::Sampling()
         },    // Ball's X velocity changes only direction
         {-ElasticBall::GetVelocityLimit().y / ElasticBall::GetVelocityLimit().x,
@@ -33,7 +33,7 @@ EnvironmentPong3I::EnvironmentPong3I(void)
 
     _states = {
         {0, TheGameOfPong::Field().y}, // Paddle's position changes from 0 to TheGameOfPong::Field().y
-        {-AgentUCB<IPlayer::PlayerAction>::Sampling(),
+        {-int64_t(AgentUCB<IPlayer::PlayerAction>::Sampling()),
             AgentUCB<IPlayer::PlayerAction>::Sampling()
         },    // Ball's X velocity changes only direction
         {-ElasticBall::GetVelocityLimit().y / ElasticBall::GetVelocityLimit().x,

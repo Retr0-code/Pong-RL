@@ -4,8 +4,8 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "IPlayer.hpp"
 #include "AgentUCB.hpp"
+#include "IPlayer.hpp"
 
 #define DEFAULT_SAMPLING 4
 

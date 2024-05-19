@@ -17,6 +17,7 @@ GameEngine::GameEngine(
         _sceneObjects.push_back(i);
     }
     _window->setFramerateLimit(WINDOW_FRAME_LIMIT);
+    _window->setActive(false);
 }
 
 GameEngine::GameEngine(
@@ -30,6 +31,9 @@ GameEngine::GameEngine(
     for (auto i : _sceneObjects)
         if (i == nullptr)
             throw std::invalid_argument{"Error: GameEngine::GameEngine nullptr was in SceneObjects."};
+
+    _window->setFramerateLimit(WINDOW_FRAME_LIMIT);
+    _window->setActive(false);
 }
 
 void GameEngine::Render(void)
@@ -44,6 +48,9 @@ void GameEngine::Render(void)
 
 void GameEngine::Run(void)
 {
+    //sf::Context context;
+    _window->setActive(true);
+
     _runGame = true;
     _gameClock.restart();
     while (_runGame)

@@ -6,7 +6,7 @@
 #include "Scoreboard.hpp"
 
 Scoreboard::Scoreboard(const sf::Vector2u& field, IPlayerShared leftPlayer, IPlayerShared rightPlayer)
-    : IGameObject(sf::Vector2f{field.x / 2, 0}, CreateText(field)),
+    : IGameObject(sf::Vector2f{float(field.x) / 2, 0}, CreateText(field)),
     _leftPlayer(leftPlayer), _rightPlayer(rightPlayer) {  }
 
 void Scoreboard::Reset(void)

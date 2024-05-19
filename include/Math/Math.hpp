@@ -3,6 +3,14 @@
 
 #include "Matrix.hpp"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846f
+#endif
+
+#ifndef M_E
+#define M_E 2.718281828f
+#endif
+
 namespace Math
 {
     template<typename T>
