@@ -22,6 +22,9 @@ AgentUCB<ActionsEnum>::AgentUCB(const StateDimensions &dimensions, const Actions
     _episode(0), _lastObservationState(&_emptyObservationState)
 
 {
+    if (epsilon < 0)
+        throw std::invalid_argument{"Error in [AgentUCB<ActionsEnum>::AgentUCB(const StateDimensions &dimensions, const ActionsSpace &actions, float epsilon, float rewardRatio)]:\n\tEpsilon cannot be lower then 0."};
+
     _states.reserve(_statesAmount);
     _lastObservationState = &_states[std::vector<int64_t>(dimensions.size())];
 }
@@ -164,8 +167,10 @@ size_t AgentUCB<ActionsEnum>::SetSampling(size_t sampling)
 template <typename ActionsEnum>
 void AgentUCB<ActionsEnum>::SetEpsilon(float epsilon)
 {
-    if (epsilon >= 0)
-        _epsilon = epsilon;
+    if (epsilon < 0)
+        throw std::invalid_argument{"Error in [AgentUCB<ActionsEnum>::AgentUCB(const StateDimensions &dimensions, const ActionsSpace &actions, float epsilon, float rewardRatio)]:\n\tEpsilon cannot be lower then 0."};
+    
+    _epsilon = epsilon;
 }
 
 template <typename ActionsEnum>

@@ -8,7 +8,7 @@
 /**
  * @brief physics tickrate
  */
-#define DELTA_TIME  1.f / 256.f
+#define DELTA_TIME  (1.f / 256.f)
 
 /**
  * @brief Updates all IGameObjects on screen using SFML frontend

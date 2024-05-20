@@ -48,7 +48,6 @@ void GameEngine::Render(void)
 
 void GameEngine::Run(void)
 {
-    //sf::Context context;
     _window->setActive(true);
 
     _runGame = true;
