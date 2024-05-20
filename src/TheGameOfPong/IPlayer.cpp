@@ -43,6 +43,9 @@ void IPlayer::SetOtherPlayer(std::shared_ptr<IPlayer> otherPlayer)
 	if (otherPlayer.get() == nullptr)
 		throw std::invalid_argument{ "Error: IPlayer::SetOtherPlayer got nullptr." };
 
+	if (otherPlayer.get() == this)
+		throw std::invalid_argument{ "Error: IPlayer::SetOtherPlayer got pointer to itself." };
+
 	_otherPlayer = otherPlayer;
 }
 

@@ -84,4 +84,3 @@ private:
     IPlayerShared _rightPlayer;
     static sf::Vector2f _velocityLimit;
 };
-
