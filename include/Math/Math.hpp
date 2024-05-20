@@ -2,7 +2,6 @@
 #include <cmath>
 
 #include "Matrix.hpp"
-#include "FunctionContext.hpp"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846f
@@ -19,9 +18,6 @@ namespace Math
 {
     template<typename T>
     class Matrix;
-
-    template <typename T>
-    class FunctionContext;
 
     /**
      * @brief Rectified linear unit function for single vector
