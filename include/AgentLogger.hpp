@@ -2,7 +2,6 @@
 #include <thread>
 #include <memory>
 #include <fstream>
-#include <functional>
 
 #include "IAgent.hpp"
 #include "TheGameOfPong/IPlayer.hpp"

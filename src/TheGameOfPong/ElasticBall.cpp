@@ -1,4 +1,3 @@
-#include <iostream>
 #include "ElasticBall.hpp"
 #include "TheGameOfPong.hpp"
 
